@@ -26,8 +26,8 @@ CREATE TABLE `Location` (
   `location_id` int PRIMARY KEY,
   `address` varchar(255),
   `city` varchar(255),
-  `state` char,
-  `ZIP` char
+  `state` varchar(2),
+  `ZIP` varchar(10)
 );
 
 CREATE TABLE `Repair` (

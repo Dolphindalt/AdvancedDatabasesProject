@@ -38,6 +38,7 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="add_customer.php">Add Customer</a>
+            <a class="dropdown-item" href="edit_employment_history.php">Edit Employment History</a>
             <a class="dropdown-item" href="#">Payment History</a>
         </li>
         <li class="nav-item dropdown">
@@ -45,7 +46,7 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             Sales
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Sales Form</a>
+            <a class="dropdown-item" href="sales_form.php">Sales Form</a>
             <a class="dropdown-item" href="#">Sales Report</a>
         </li>
         <li class="nav-item dropdown">
