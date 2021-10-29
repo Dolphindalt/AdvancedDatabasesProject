@@ -5,7 +5,7 @@
     {
 ?>
 
-<form>
+<form action='purchase_form.php' method='post'>
     <div class="form-row">
         <div class="col">
             <h1>Purchase Form</h1>
@@ -20,8 +20,19 @@
             </script>
         </div>
         <div class="col">
-            <label for="sellerTaxID">Select Seller</label>
-            <select class="form-control" id="sellerTaxID">
+            <label for="salesPersonTaxID">Salesperson</label>
+            <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID">
+            <option selected>Choose</option>
+            <?php
+                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Salesperson'") as $row) {
+                    echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
+                }
+            ?>
+            </select>
+        </div>
+        <div class="col">
+            <label for="sellerTaxID">Seller</label>
+            <select class="form-control" id="sellerTaxID" name="sellerTaxID">
             <option selected>Choose</option>
             <?php
                 foreach ($db->query("SELECT seller_tax_id, name FROM Seller") as $row) {
@@ -32,9 +43,35 @@
             </select>
         </div>
         <div class="col">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="isAuction" name="isAuction">
+                <label class="form-check-label" for="isAuction">
+                    Auction
+                </label>
+            </div>
+        </div>
+        <div class="col">
             <button type="button" class="btn btn-primary" onclick="toggleShowEnterSellerSection()">Enter new seller</button>
         </div>
     </div>
+    <div class="form-row">
+            <div class="col">
+                <label for="street">Street</label>
+                <input type="text" class="form-control" name="street" id="street">
+            </div>
+            <div class="col">
+                <label for="city">City</label>
+                <input type="text" class="form-control" name="city" id="city">
+            </div>
+            <div class="col">
+                <label for="state">State</label>
+                <input type="text" class="form-control" name="state" id="state">
+            </div>
+            <div class="col">
+                <label for="zip">Postal/ZIP Code</label>
+                <input type="text" class="form-control" name="zip" id="zip">
+            </div>
+        </div>
     <div id='new-seller-sink' style="display: none;">
         <div class="form-row">
             <div class="col">
@@ -55,12 +92,110 @@
             </div>
         </div>
     </div>
+    <div id="purchase-form-sink"></div>
     <div class="form-row">
-        
+        <div class="col">
+            <button type="button" class="btn btn-primary" onclick="growPurchaseForm()">Add Purchase</button>
+            <button type="submit" class="btn btn-primary" >Submit</button>
+        </div>
     </div>
 </form>
 
 <?php
+    }
+    else if ($method == "POST")
+    {
+        $db->query("START TRANSACTION;");
+
+        // Global fields 
+        $seller_tax_id = $_POST['sellerTaxID'];
+        $employee_tax_id = $_POST['salesPersonTaxID'];
+        $date = $_POST['date'];
+        $isAuction = $_POST['isAuction'];
+
+        $street = $_POST['street'];
+        $city = $_POST['city'];
+        $state = $_POST['state'];
+        $zip = $_POST['zip'];
+
+        $statement = $db->prepare("INSERT INTO Location (address, city, state, zip) VALUES (?, ?, ?, ?);");
+        $statement->bindParam(1, $street, PDO::PARAM_STR);
+        $statement->bindParam(2, $city, PDO::PARAM_STR);
+        $statement->bindParam(3, $state, PDO::PARAM_STR);
+        $statement->bindParam(4, $zip, PDO::PARAM_STR);
+        $statement->execute();
+
+        $statement = $db->prepare("INSERT INTO Purchase (date, location_id, is_auction, seller_id, tax_id) VALUES (STR_TO_DATE(?, '%Y-%c-%e'), LAST_INSERT_ID(), ?, ?, ?)");
+        $statement->bindParam(1, $date, PDO::PARAM_STR);
+        $statement->bindParam(2, $isAuction, PDO::PARAM_BOOL);
+        $statement->bindParam(3, $seller_tax_id, PDO::PARAM_STR);
+        $statement->bindParam(4, $employee_tax_id, PDO::PARAM_STR);
+        $statement->execute();
+
+        $query = $db->query("SELECT LAST_INSERT_ID() AS purchase_id;");
+        $query->execute();
+        $purchase_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['purchase_id'];
+
+        // Purchase fields
+        for ($p = 1; isset($_POST['vin' . $p]); $p++)
+        {
+            $vin = $_POST['vin' . $p];
+            $bookPrice = $_POST['bookPrice' . $p];
+            $actualPrice = $_POST['actualPrice' . $p];
+            $make = $_POST['make' . $p];
+            $model = $_POST['model' . $p];
+            $year = $_POST['year' . $p];
+            $color = $_POST['color' . $p];
+            $miles = $_POST['miles' . $p];
+            $style = $_POST['style' . $p];
+            $condition = $_POST['condition' . $p];
+
+            $statement = $db->prepare("INSERT INTO Vehicle (`vin`, `make`, `model`, `year`, `color`, `miles`, `style`, `condition`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE `make` = VALUES(`make`), `model` = VALUES(`model`), `year` = VALUES(`year`), 
+            `color` = VALUES(`color`), `miles` = VALUES(`miles`), `style` = VALUES(`style`), `condition` = VALUES(`condition`);");
+            $statement->bindParam(1, $vin, PDO::PARAM_STR);
+            $statement->bindParam(2, $make, PDO::PARAM_STR);
+            $statement->bindParam(3, $model, PDO::PARAM_STR);
+            $statement->bindParam(4, $year, PDO::PARAM_INT);
+            $statement->bindParam(5, $color, PDO::PARAM_STR);
+            $statement->bindParam(6, $miles, PDO::PARAM_STR);
+            $statement->bindParam(7, $style, PDO::PARAM_STR);
+            $statement->bindParam(8, $condition, PDO::PARAM_STR);
+            $statement->execute();
+
+            $statement = $db->prepare("INSERT INTO Vehicle_Purchase (vin, purchase_id, book_price, paid_price) VALUES (?, ?, ?, ?)");
+            $statement->bindParam(1, $vin, PDO::PARAM_STR);
+            $statement->bindParam(2, $purchase_id, PDO::PARAM_INT);
+            $statement->bindParam(3, $bookPrice, PDO::PARAM_STR);
+            $statement->bindParam(4, $actualPrice, PDO::PARAM_STR);
+            $statement->execute();
+
+            // Optional vehicle problems fields 
+            for ($i = 1; key_exists('problemDescription' . $p . $i, $_POST); $i++)
+            {
+                $pid = "" . $p . $i;
+                $estimatedCost = $_POST['problemCost' . $pid];
+                $description = $_POST['problemDescription' . $pid];
+
+                $statement = $db->prepare("INSERT INTO Problem (description, estimated_repair_cost) VALUES (?, ?)");
+                $statement->bindParam(1, $description, PDO::PARAM_STR);
+                $statement->bindParam(2, $estimatedCost, PDO::PARAM_STR);
+                $statement->execute();
+
+                $query = $db->query("SELECT LAST_INSERT_ID() AS problem_id;");
+                $query->execute();
+                $problem_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['problem_id'];
+
+                $statement = $db->prepare("INSERT INTO Vehicle_Problem (vin, problem_id) VALUES (?, ?)");
+                $statement->bindParam(1, $vin, PDO::PARAM_INT);
+                $statement->bindParam(2, $problem_id, PDO::PARAM_INT);
+                $statement->execute();
+            }
+        }
+
+        $db->query("COMMIT;");
+        echo "Purchase completed.";
     }
     require_once 'footer.php';
 ?>

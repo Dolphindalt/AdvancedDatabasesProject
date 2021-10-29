@@ -67,7 +67,7 @@
 
         $tax_id = $_POST['customerID'];
 
-        for ($i = 1; isset($_POST['employer' . $i]); $i++) {
+        for ($i = 1; key_exists('employer' . $i, $_POST); $i++) {
             $employer = $_POST['employer' . $i];
             $title = $_POST['title' . $i];
             $supervisor = $_POST['supervisor' . $i];

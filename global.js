@@ -65,12 +65,20 @@ function toggleShowEnterSellerSection() {
 function sendAddSeller() {
     let sellerName = document.getElementById("newSellerName").value;
     let sellerID = document.getElementById("newSellerTaxID").value;
+    let street = document.getElementById("street").value;
+    let city = document.getElementById("city").value;
+    let state = document.getElementById("state").value;
+    let zip = document.getElementById("zip").value;
     $.ajax({
         url: "seller.php",
         type: "POST",
         data: { 
             seller_tax_id: sellerID,
-            name: sellerName
+            name: sellerName,
+            street: street,
+            city: city,
+            state: state,
+            zip: zip
         },
         success: function(data, status, xhr) {
             let select = document.getElementById("sellerTaxID");
@@ -87,6 +95,104 @@ function sendAddSeller() {
             showSnackbar(vagueError);
         }
     });
+}
+
+var purchaseCounter = 0;
+
+function growPurchaseForm() {
+    let wrapperDiv = document.getElementById('purchase-form-sink');
+    purchaseCounter += 1;
+    let purchaseRecordString = " \
+    <div style='background-color: lightgoldenrodyellow;'> \
+        <div class='form-row'> \
+            <div class='col'> \
+                <h2>Purchase " + purchaseCounter + "</h2> \
+            </div> \
+        </div> \
+        <div class='form-row'> \
+            <div class='col'> \
+                <label for='vin" + purchaseCounter + "'>VIN</label> \
+                <input type='text' class='form-control' name='vin" + purchaseCounter + "' id='vin" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='bookPrice" + purchaseCounter + "'>Book Price</label> \
+                <input type='text' class='form-control' name='bookPrice" + purchaseCounter + "' id='bookPrice" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='actualPrice" + purchaseCounter + "'>Actual Price</label> \
+                <input type='text' class='form-control' name='actualPrice" + purchaseCounter + "' id='actualPrice" + purchaseCounter + "'> \
+            </div> \
+        </div> \
+        <div class='form-row'> \
+            <div class='col'> \
+                <label for='make" + purchaseCounter + "'>Make</label> \
+                <input type='text' class='form-control' name='make" + purchaseCounter + "' id='make" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='model" + purchaseCounter + "'>Model</label> \
+                <input type='text' class='form-control' name='model" + purchaseCounter + "' id='model" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='year" + purchaseCounter + "'>Year</label> \
+                <input type='text' class='form-control' name='year" + purchaseCounter + "' id='year" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='color" + purchaseCounter + "'>Color</label> \
+                <input type='text' class='form-control' name='color" + purchaseCounter + "' id='color" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='miles" + purchaseCounter + "'>Miles</label> \
+                <input type='text' class='form-control' name='miles" + purchaseCounter + "' id='miles" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='style" + purchaseCounter + "'>Style</label> \
+                <input type='text' class='form-control' name='style" + purchaseCounter + "' id='style" + purchaseCounter + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='condition" + purchaseCounter + "'>Condition</label> \
+                <input type='text' class='form-control' name='condition" + purchaseCounter + "' id='condition" + purchaseCounter + "'> \
+            </div> \
+        </div> \
+        <div class='form-row'> \
+            <div class='col'> \
+                <h3>Vehicle Problems</h3> \
+            </div> \
+            <div class='col'> \
+                <button type='button' class='btn btn-primary' onclick='growVehicleProblems(" + purchaseCounter + ")'>Add Problem</button> \
+            </div> \
+        </div> \
+        <div id='vehicle-problems-sink" + purchaseCounter + "'> \
+        </div> \
+    </div> \
+    ";
+    wrapperDiv.insertAdjacentHTML('beforeend', purchaseRecordString);
+}
+
+var problemsCountMap = new Map();
+
+function growVehicleProblems(vehicleNumber) {
+    let wrapperDiv = document.getElementById('vehicle-problems-sink' + vehicleNumber);
+    if (!problemsCountMap.has(vehicleNumber)) {
+        problemsCountMap.set(vehicleNumber, 1);
+    } else {
+        problemsCountMap.set(vehicleNumber, problemsCountMap.get(vehicleNumber) + 1);
+    }
+    let problemID = "" + vehicleNumber + problemsCountMap.get(vehicleNumber);
+    let vehicleProblemsString = " \
+    <div id='vehicle-problem" + problemID + "' class='background-color: lightblue'> \
+        <div class='form-row'> \
+            <div class='col'> \
+                <label for='problemDescription" + problemID + "'>Description</label> \
+                <input type='text' class='form-control' name='problemDescription" + problemID + "' id='problemDescription" + problemID + "'> \
+            </div> \
+            <div class='col'> \
+                <label for='problemCost" + problemID + "'>Estimated Cost</label> \
+                <input type='text' class='form-control' name='problemCost" + problemID + "' id='problemCost" + problemID + "'> \
+            </div> \
+        </div> \
+    </div> \
+    ";
+    wrapperDiv.insertAdjacentHTML('beforeend', vehicleProblemsString);
 }
 
 // End javascript for the purchases page.
