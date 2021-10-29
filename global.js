@@ -1,3 +1,12 @@
+var vagueError = "Something went wrong! Please try again.";
+
+function showSnackbar(text) {
+    let elmt = document.getElementById("snackbar");
+    elmt.className = "show";
+    elmt.innerHTML = text;
+    setTimeout(() => { elmt.className = elmt.className.replace("show", "hide"); }, 3000);
+}
+
 // Cancerscript for the employment history section of the add customer form.
 
 var employmentFormCounter = 2;
@@ -41,3 +50,53 @@ function growEmploymentHistoryForm() {
 }
 
 // End of cancerscript for the employment history section of the add customer form.
+
+// Javascript for the purchases page.
+
+function toggleShowEnterSellerSection() {
+    let wrapperDiv = document.getElementById('new-seller-sink');
+    if (wrapperDiv.style.display == "none") {
+        wrapperDiv.style.display = "block";
+    } else {
+        wrapperDiv.style.display = "none";
+    }
+}
+
+function sendAddSeller() {
+    let sellerName = document.getElementById("newSellerName").value;
+    let sellerID = document.getElementById("newSellerTaxID").value;
+    $.ajax({
+        url: "seller.php",
+        type: "POST",
+        data: { 
+            seller_tax_id: sellerID,
+            name: sellerName
+        },
+        success: function(data, status, xhr) {
+            let select = document.getElementById("sellerTaxID");
+            let newOption = document.createElement("option");
+            newOption.text = sellerName;
+            newOption.value = sellerID;
+            select.appendChild(newOption);
+            toggleShowEnterSellerSection();
+            document.getElementById("newSellerName").value = "";
+            document.getElementById("newSellerTaxID").value = "";
+            showSnackbar("Successfully added new seller!");
+        },
+        error: function(jqXhr, textStatus, errorMessage) {
+            showSnackbar(vagueError);
+        }
+    });
+}
+
+// End javascript for the purchases page.
+
+// Javascript for time and dates. 
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+// End of javascript for time and dates. 

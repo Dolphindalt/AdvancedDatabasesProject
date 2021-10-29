@@ -23,7 +23,7 @@ CREATE TABLE `Customer` (
 );
 
 CREATE TABLE `Location` (
-  `location_id` int PRIMARY KEY,
+  `location_id` int PRIMARY KEY AUTO_INCREMENT,
   `address` varchar(255),
   `city` varchar(255),
   `state` varchar(2),
@@ -31,14 +31,14 @@ CREATE TABLE `Location` (
 );
 
 CREATE TABLE `Repair` (
-  `repair_id` int PRIMARY KEY,
+  `repair_id` int PRIMARY KEY AUTO_INCREMENT,
   `description` varchar(255),
   `material_cost` double,
   `labor_cost` double
 );
 
 CREATE TABLE `Purchase` (
-  `purchase_id` int PRIMARY KEY,
+  `purchase_id` int PRIMARY KEY AUTO_INCREMENT,
   `date` datetime,
   `location_id` int,
   `is_auction` bit,
@@ -58,14 +58,14 @@ CREATE TABLE `Vehicle` (
 );
 
 CREATE TABLE `Problem` (
-  `problem_id` int PRIMARY KEY,
+  `problem_id` int PRIMARY KEY AUTO_INCREMENT,
   `description` varchar(255),
   `estimated_repair_cost` double,
   `actual_repair_cost` double
 );
 
 CREATE TABLE `WarrantyForm` (
-  `warranty_form_id` int PRIMARY KEY,
+  `warranty_form_id` int PRIMARY KEY AUTO_INCREMENT,
   `cosigner` varchar(255),
   `date_sold` datetime,
   `total_cost` double,
@@ -73,7 +73,7 @@ CREATE TABLE `WarrantyForm` (
 );
 
 CREATE TABLE `Warranty` (
-  `warranty_id` int PRIMARY KEY,
+  `warranty_id` int PRIMARY KEY AUTO_INCREMENT,
   `start_date` datetime,
   `length` int,
   `cost` double,
@@ -81,12 +81,12 @@ CREATE TABLE `Warranty` (
 );
 
 CREATE TABLE `Items` (
-  `item_id` int PRIMARY KEY,
+  `item_id` int PRIMARY KEY AUTO_INCREMENT,
   `description` varchar(255)
 );
 
 CREATE TABLE `Payment` (
-  `payment_id` int PRIMARY KEY,
+  `payment_id` int PRIMARY KEY AUTO_INCREMENT,
   `payment_date` datetime,
   `due_date` datetime,
   `paid_date` datetime,
@@ -95,7 +95,7 @@ CREATE TABLE `Payment` (
 );
 
 CREATE TABLE `Sale` (
-  `sale_id` int PRIMARY KEY,
+  `sale_id` int PRIMARY KEY AUTO_INCREMENT,
   `date` datetime,
   `total_due` double,
   `down_payment` double,
@@ -103,13 +103,18 @@ CREATE TABLE `Sale` (
 );
 
 CREATE TABLE `EmployementHistory` (
-  `employement_history_id` int PRIMARY KEY,
+  `employement_history_id` int PRIMARY KEY AUTO_INCREMENT,
   `employer` varchar(255),
   `title` varchar(255),
   `supervisor` varchar(255),
   `phone` varchar(255),
   `address` varchar(255),
   `start_date` datetime
+);
+
+CREATE TABLE `Seller` (
+  `seller_tax_id` INT PRIMARY KEY,
+  `name` VARCHAR(255)
 );
 
 CREATE TABLE `Employee_Location` (
@@ -191,7 +196,7 @@ CREATE TABLE `Customer_EmploymentHistory` (
 
 ALTER TABLE `Purchase` ADD FOREIGN KEY (`location_id`) REFERENCES `Location` (`location_id`);
 
-ALTER TABLE `Purchase` ADD FOREIGN KEY (`seller_id`) REFERENCES `Employee` (`employee_id`);
+ALTER TABLE `Purchase` ADD FOREIGN KEY (`seller_id`) REFERENCES `Seller` (`seller_tax_id`);
 
 ALTER TABLE `Employee_Location` ADD FOREIGN KEY (`employee_id`) REFERENCES `Employee` (`employee_id`);
 
