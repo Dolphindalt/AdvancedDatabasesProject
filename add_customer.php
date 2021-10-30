@@ -87,11 +87,8 @@
         $statement->bindParam(9, $state, PDO::PARAM_STR);
         $statement->bindParam(10, $zip, PDO::PARAM_STR);
         $statement->execute();
-        ?>
-        <div class="alert alert-primary" role="alert">
-            The customer information has been recorded. 
-        </div>
-        <?php
+        
+        header("Location: view_customer.php/?taxid=" . $tax_id);
     }
     require_once 'footer.php';
 ?>

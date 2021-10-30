@@ -24,7 +24,7 @@
             <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID">
             <option selected>Choose</option>
             <?php
-                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Salesperson'") as $row) {
+                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Buyer'") as $row) {
                     echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
                 }
             ?>
