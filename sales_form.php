@@ -11,6 +11,9 @@
         <div class="col">
             <label for="date">Date</label>
             <input type="date" class="form-control" name="date" id="date" placeholder="">
+            <script>
+                document.getElementById('date').value = new Date().toDateInputValue();
+            </script>
         </div>
         <div class="col">
             <label for="downPayment">Down Payment</label>
@@ -52,20 +55,56 @@
         </div>
     </div>
     <div class="form-row">
-        <h2>Vehicle and Customer</h2>
+        <h2>Vehicle</h2>
     </div>
     <div class="form-row">
         <div class="col">
+            <script>
+                function onVinChange(event) {
+                    $.ajax({
+                        url: "vehicle.php",
+                        type: "POST",
+                        data: { 
+                            vin: event.target.value
+                        },
+                        success: function(data, status, xhr) {
+                            document.getElementById("vehicleColor").value = data.color;
+                            document.getElementById("vehicleMiles").value = data.miles;
+                            document.getElementById("vehicleCondition").value = data.condition;
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) {
+                            showSnackbar(vagueError);
+                        }
+                    });
+                }
+            </script>
             <label for="vin">VIN</label>
-            <select class="form-control" id="vin" name="vin">
+            <select class="form-control" id="vin" name="vin" onchange="onVinChange(event)">
             <option selected>Choose</option>
             <?php
-                foreach ($db->query("SELECT vin FROM Vehicle") as $row) {
+                foreach ($db->query("SELECT vin FROM Vehicle WHERE sold = 0") as $row) {
                     echo '<option value=' . $row['vin'] . '>' . $row['vin'] . '</option>';
                 }
             ?>
             </select>
         </div>
+        <div class='col'>
+            <label for="vehicleColor">Color</label>
+            <input type="text" class="form-control" name="vehicleColor" id="vehicleColor" value="">
+        </div>
+        <div class='col'>
+            <label for="vehicleMiles">Miles</label>
+            <input type="number" class="form-control" name="vehicleMiles" id="vehicleMiles" value="">
+        </div>
+        <div class='col'>
+            <label for="vehicleCondition">Condition</label>
+            <input type="text" class="form-control" name="vehicleCondition" id="vehicleCondition" value="">
+        </div>
+    </div>
+    <div class="form-row">
+        <h2>Customer</h2>
+    </div>
+    <div class="form-row">
         <div class="col">
             <label for="customerID">Customer</label>
             <select class="form-control" id="customerID" name="customerID">
@@ -114,11 +153,26 @@
         $query->execute();
         $sale_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['sale_id'];
 
-        $statement = $db->prepare("INSERT INTO Vehicle_Sale (vin, sale_id, list_price, sales_price) VALUES (?, ?, ?, ?);");
+        $statement = $db->prepare("SELECT color, miles, `condition` FROM Vehicle WHERE vin = ?;");
+        $statement->bindParam(1, $vin, PDO::PARAM_STR);
+        $statement->execute();
+        $vehicle_info = $statement->fetchAll(PDO::FETCH_ASSOC)[0];
+        $color = $vehicle_info['color'];
+        $miles = $vehicle_info['miles'];
+        $condition = $vehicle_info['condition'];
+
+        $statement = $db->prepare("INSERT INTO Vehicle_Sale (vin, sale_id, list_price, sales_price, color, miles, `condition`) VALUES (?, ?, ?, ?, ?, ?, ?);");
         $statement->bindParam(1, $vin, PDO::PARAM_STR);
         $statement->bindParam(2, $sale_id, PDO::PARAM_INT);
         $statement->bindParam(3, $listedPrice, PDO::PARAM_STR);
         $statement->bindParam(4, $salePrice, PDO::PARAM_STR);
+        $statement->bindParam(5, $color, PDO::PARAM_STR);
+        $statement->bindParam(6, $miles, PDO::PARAM_STR);
+        $statement->bindParam(7, $condition, PDO::PARAM_STR);
+        $statement->execute();
+
+        $statement = $db->prepare("UPDATE Vehicle SET sold = 1 WHERE vin = ?;");
+        $statement->bindParam(1, $vin, PDO::PARAM_STR);
         $statement->execute();
 
         $statement = $db->prepare("INSERT INTO Sale_Employee (sale_id, employee_id, employee_commission_percent) VALUES (?, ?, ?);");
@@ -136,7 +190,7 @@
 
         ?>
             <div class="alert alert-primary" role="alert">
-                Sale record created. Click <a href="view_sale.php/?saleid=<?php echo $sale_id; ?>">here</a> to view it.
+                Sale record created. Click <a href="view_sale.php?saleid=<?php echo $sale_id; ?>">here</a> to view it.
             </div>
         <?php
     }

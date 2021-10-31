@@ -77,8 +77,8 @@
             <input type="text" class="form-control" name="" id="" value="<?php echo $employee_last_name; ?>" readonly>
         </div>
         <div class="col">
-            <label for="salespersonCommission">Commission %</label>
-            <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="<?php echo $commission; ?>" readonly>
+            <label for="salespersonCommission">Commission</label>
+            <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="<?php echo $total_due * ($commission / 100.0); ?>" readonly>
         </div>
     </div>
     <div class="form-row">
@@ -126,59 +126,6 @@
 </form>
 
 <?php
-    } 
-    else if ($method == "POST") 
-    {
-        $date = $_POST['date'];
-        $downPayment = $_POST['downPayment'];
-        $financedAmount = $_POST['financedAmount'];
-        $totalDue = $downPayment + $financedAmount;
-        $salePrice = $_POST['salePrice'];
-        $listedPrice = $_POST['listedPrice'];
-
-        $commission = $_POST['salespersonCommission'];
-        $salespersonID = $_POST['salesPersonTaxID'];
-        $vin = $_POST['vin'];
-        $customerID = $_POST['customerID'];
-
-        $db->query("START TRANSACTION;")->execute();
-
-        $statement = $db->prepare("INSERT INTO Sale (date, total_due, down_payment, financed_amount) VALUES (STR_TO_DATE(?, '%Y-%c-%e'), ?, ?, ?);");
-        $statement->bindParam(1, $date, PDO::PARAM_STR);
-        $statement->bindParam(2, $totalDue, PDO::PARAM_STR);
-        $statement->bindParam(3, $downPayment, PDO::PARAM_STR);
-        $statement->bindParam(4, $financedAmount, PDO::PARAM_STR);
-        $statement->execute();
-
-        $query = $db->query("SELECT LAST_INSERT_ID() AS sale_id;");
-        $query->execute();
-        $sale_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['sale_id'];
-
-        $statement = $db->prepare("INSERT INTO Vehicle_Sale (vin, sale_id, list_price, sales_price) VALUES (?, ?, ?, ?);");
-        $statement->bindParam(1, $vin, PDO::PARAM_STR);
-        $statement->bindParam(2, $sale_id, PDO::PARAM_INT);
-        $statement->bindParam(3, $listedPrice, PDO::PARAM_STR);
-        $statement->bindParam(4, $salePrice, PDO::PARAM_STR);
-        $statement->execute();
-
-        $statement = $db->prepare("INSERT INTO Sale_Employee (sale_id, employee_id, employee_commission_percent) VALUES (?, ?, ?);");
-        $statement->bindParam(1, $sale_id, PDO::PARAM_INT);
-        $statement->bindParam(2, $salespersonID, PDO::PARAM_INT);
-        $statement->bindParam(3, $commission, PDO::PARAM_STR);
-        $statement->execute();
-
-        $statement = $db->prepare("INSERT INTO Sale_Customer (sale_id, tax_id) VALUES (?, ?);");
-        $statement->bindParam(1, $sale_id, PDO::PARAM_INT);
-        $statement->bindParam(2, $customerID, PDO::PARAM_INT);
-        $statement->execute();
-
-        $db->query("COMMIT;")->execute();
-
-        ?>
-            <div class="alert alert-primary" role="alert">
-                Sale record created. Click <a href="view_sale.php/?saleid=<?php echo $sale_id; ?>">here</a> to view it.
-            </div>
-        <?php
     }
     require_once 'footer.php';
 ?>

@@ -54,7 +54,8 @@ CREATE TABLE `Vehicle` (
   `color` varchar(255),
   `miles` double,
   `style` varchar(255),
-  `condition` varchar(255)
+  `condition` varchar(255),
+  `sold` bit DEFAULT 0
 );
 
 CREATE TABLE `Problem` (
@@ -75,7 +76,7 @@ CREATE TABLE `WarrantyForm` (
 CREATE TABLE `Warranty` (
   `warranty_id` int PRIMARY KEY AUTO_INCREMENT,
   `start_date` datetime,
-  `length` int,
+  `end_date` datetime,
   `cost` double,
   `deductible` double
 );
@@ -131,7 +132,10 @@ CREATE TABLE `Vehicle_Purchase` (
   `vin` varchar(255),
   `purchase_id` int,
   `book_price` double,
-  `paid_price` double
+  `paid_price` double,
+  `color` varchar(255),
+  `miles` double,
+  `condition` varchar(255)
 );
 
 CREATE TABLE `Vehicle_Problem` (
@@ -170,7 +174,10 @@ CREATE TABLE `Vehicle_Sale` (
   `vin` varchar(255),
   `sale_id` int,
   `list_price` double,
-  `sales_price` double
+  `sales_price` double,
+  `color` varchar(255),
+  `miles` double,
+  `condition` varchar(255)
 );
 
 CREATE TABLE `Sale_Employee` (

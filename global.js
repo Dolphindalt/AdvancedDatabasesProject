@@ -197,6 +197,67 @@ function growVehicleProblems(vehicleNumber) {
 
 // End javascript for the purchases page.
 
+// Javascript for Warranties.
+
+var warrantiesCount = 0;
+var itemsMap = new Map();
+
+function growWarrantyForm() {
+    let wrapperDiv = document.getElementById('warranty-sink');
+    warrantiesCount += 1;
+    itemsMap.set(warrantiesCount, 1);
+    let warrantyString = "\
+    <div class='form-row'> \
+        <div class='col'> \
+            <label for='startDate" + warrantiesCount + "'>Start Date</label> \
+            <input type='date' class='form-control' name='startDate" + warrantiesCount + "' id='startDate" + warrantiesCount + "'> \
+            <script> \
+                document.getElementById('startDate" + warrantiesCount + "').value = new Date().toDateInputValue(); \
+            </script> \
+        </div> \
+        <div class='col'> \
+            <label for='endDate" + warrantiesCount + "'>End Date</label> \
+            <input type='date' class='form-control' name='endDate" + warrantiesCount + "' id='endDate" + warrantiesCount + "'> \
+        </div> \
+        <div class='col'> \
+            <label for='cost" + warrantiesCount + "'>Total Cost</label> \
+            <input type='text' class='form-control' name='cost" + warrantiesCount + "' id='cost" + warrantiesCount + "'> \
+        </div> \
+        <div class='col'> \
+            <label for='deductible" + warrantiesCount + "'>Deductible</label> \
+            <input type='text' class='form-control' name='deductible" + warrantiesCount + "' id='deductible" + warrantiesCount + "'> \
+        </div> \
+    </div> \
+    <div class='form-row'> \
+        <h3>Items Covered</h3> \
+    </div> \
+    <div id='item-sink-" + warrantiesCount + "'> \
+        <div class='form-row'> \
+            <label for='description" + warrantiesCount + "1'>Description</label> \
+            <input type='text' class='form-control' name='description" + warrantiesCount + "1' id='description" + warrantiesCount + "1'> \
+        </div> \
+    </div> \
+    <div class='form-row'> \
+        <button type='button' class='btn btn-primary' onclick='growItems(" + warrantiesCount + ")'>Add Item</button> \
+    </div> \
+    ";
+    wrapperDiv.insertAdjacentHTML('beforeend', warrantyString);
+}
+
+function growItems(warrantyCount) {
+    let wrapperDiv = document.getElementById('item-sink-' + warrantyCount);
+    let itemNumber = itemsMap.get(warrantyCount) + 1;
+    itemsMap.set(warrantyCount, itemNumber);
+    let itemString = " \
+    <div class='form-row'> \
+        <label for='description" + warrantyCount + itemNumber + "'>Description</label> \
+        <input type='text' class='form-control' name='description" + warrantyCount + itemNumber + "' id='description" + warrantyCount + itemNumber + "'> \
+    </div>";
+    wrapperDiv.insertAdjacentHTML('beforeend', itemString);
+}
+
+// End javascript for Warranties.
+
 // Javascript for time and dates. 
 
 Date.prototype.toDateInputValue = (function() {

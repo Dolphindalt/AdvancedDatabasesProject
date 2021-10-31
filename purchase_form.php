@@ -164,11 +164,14 @@
             $statement->bindParam(8, $condition, PDO::PARAM_STR);
             $statement->execute();
 
-            $statement = $db->prepare("INSERT INTO Vehicle_Purchase (vin, purchase_id, book_price, paid_price) VALUES (?, ?, ?, ?)");
+            $statement = $db->prepare("INSERT INTO Vehicle_Purchase (vin, purchase_id, book_price, paid_price, color, miles, `condition`) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $statement->bindParam(1, $vin, PDO::PARAM_STR);
             $statement->bindParam(2, $purchase_id, PDO::PARAM_INT);
             $statement->bindParam(3, $bookPrice, PDO::PARAM_STR);
             $statement->bindParam(4, $actualPrice, PDO::PARAM_STR);
+            $statement->bindParam(5, $color, PDO::PARAM_STR);
+            $statement->bindParam(6, $miles, PDO::PARAM_STR);
+            $statement->bindParam(7, $condition, PDO::PARAM_STR);
             $statement->execute();
 
             // Optional vehicle problems fields 
