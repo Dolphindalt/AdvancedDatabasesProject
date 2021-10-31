@@ -34,8 +34,9 @@
         $color = $info['color'];
 ?>
 
-<form action='view_sale.php' method='post'>
-    <h1>Sale Information</h1>
+<h1>Sale Information</h1>
+<form action='view_sale.php' method='post' style="padding-left: 2em;">
+    <h2>Sales</h2>
     <div class="form-row">
         <div class="col">
             <label for="date">Date</label>

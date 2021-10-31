@@ -4,60 +4,67 @@
     if ($method == "GET")
     {
 ?>
+
+<h1 style="text-align: center;">Employment History Form</h1>
 <form action='edit_employment_history.php' method='post'>
     <div class="form-row">
-        <div class="col">
-            <h2>Employment History</h2>
+        <div class="col" style="text-align: center;">
+            <h2>Enter Employment History:</h2>
         </div>
     </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="customerID">Select Customer</label>
-            <select class="form-control" id="customerID">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT first_name, last_name, tax_id FROM Customer") as $row) {
-                    $name_string = $row['first_name'] . ' ' . $row['last_name'] . ' ' . $row['tax_id'];
-                    echo '<option value=' . $row['tax_id'] . '>' . $name_string . '</option>';
-                }
-            ?>
-            </select>
-        </div>
-    </div>
-    <div id='employeeFormSink'>
-        <div class="form-row">
-            <div class="col">
-                <label for="employer1">Employer</label>
-                <input type="text" class="form-control" name="employer1" id="employer1" placeholder="Enter your employer">
+    <div id='employeeFormSink' style="display: flex; justify-content: space-evenly;">
+        <div>
+            <div class="form-row">
+                <div class="col">
+                    <label for="customerID">Select Customer</label>
+                    <select class="form-control" id="customerID" required >
+                    <option selected>Choose</option>
+                    <?php
+                        foreach ($db->query("SELECT first_name, last_name, tax_id FROM Customer") as $row) {
+                            $name_string = $row['first_name'] . ' ' . $row['last_name'] . ' ' . $row['tax_id'];
+                            echo '<option value=' . $row['tax_id'] . '>' . $name_string . '</option>';
+                        }
+                    ?>
+                    </select>
+                </div>
             </div>
-            <div class="col">
-                <label for="title1">Title</label>
-                <input type="text" class="form-control" name="title1" id="title1" placeholder="Enter your title">
-            </div>
-            <div class="col">
-                <label for="supervisor1">Supervisor</label>
-                <input type="text" class="form-control" name="supervisor1" id="supervisor1" placeholder="Enter your supervisor">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="employerPhone1">Employer Phone</label>
-                <input type="tel" class="form-control" name="employerPhone1" id="employerPhone1" placeholder="Enter your employer's phone number">
-            </div>
-            <div class="col">
-                <label for="employerAddress1">Employer Address</label>
-                <input type="text" class="form-control" name="employerAddress1" id="employerAddress1" placeholder="Enter your employer's address">
-            </div>
-            <div class="col">
-                <label for="startDate1">Start Date</label>
-                <input type="date" class="form-control" name="startDate1" id="startDate1" placeholder="Enter the day you started working">
+            <div class="form-row">
+                <div class="col">
+                    <label for="employer1">Employer</label>
+                    <input type="text" class="form-control" name="employer1" id="employer1" placeholder="Enter your employer" required>
+                </div>
+                <div class="col">
+                    <label for="title1">Title</label>
+                    <input type="text" class="form-control" name="title1" id="title1" placeholder="Enter your title" required>
+                </div>
+                <div class="col">
+                    <label for="supervisor1">Supervisor</label>
+                    <input type="text" class="form-control" name="supervisor1" id="supervisor1" placeholder="Enter your supervisor" required>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <button type="button" class="btn btn-primary" onclick="growEmploymentHistoryForm()">Add another employment entry</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div>
+            <div class="form-row">
+                <div class="col">
+                    <label for="employerPhone1">Employer Phone</label>
+                    <input type="tel" class="form-control" name="employerPhone1" id="employerPhone1" placeholder="Enter your employer's phone number" required>
+                </div>
+                <div class="col">
+                    <label for="employerAddress1">Employer Address</label>
+                    <input type="text" class="form-control" name="employerAddress1" id="employerAddress1" placeholder="Enter your employer's address" required>
+                </div>
+                <div class="col">
+                    <label for="startDate1">Start Date</label>
+                    <input type="date" class="form-control" name="startDate1" id="startDate1" placeholder="Enter the day you started working" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" onclick="growEmploymentHistoryForm()">Add Another Employment Entry</button>
+                    <br/>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

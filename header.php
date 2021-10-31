@@ -19,11 +19,14 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type='text/javascript' src='global.js'></script>
+    <link rel="stylesheet" href="style.css"> 
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">RMN Auto Sales</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<body style="padding: 0;">
+    <nav class="navbar navbar-expand-lg navbar-light" 
+    	style="background-color: #42bcf5">
+    <a class="navbar-brand" href="#"
+    	style="font-weight: bold; font-size: 28px;">RMN Auto Sales</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="border: 2px solid black;">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -60,8 +63,8 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             <a class="dropdown-item" href="#">Purchases Report</a>
         </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-        </form>
+        <!--form class="form-inline my-2 my-lg-0">
+        </form-->
         </div>
     </nav>
     <div class='main-div'>

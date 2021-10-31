@@ -4,122 +4,127 @@
     if ($method == "GET")
     {
 ?>
-
-<form action='sales_form.php' method='post'>
-    <h1>Sale Form</h1>
-    <div class="form-row">
-        <div class="col">
-            <label for="date">Date</label>
-            <input type="date" class="form-control" name="date" id="date" placeholder="">
-            <script>
-                document.getElementById('date').value = new Date().toDateInputValue();
-            </script>
+<h1>Sales Form</h1>
+<form action='sales_form.php' method='post' style="display: flex; justify-content: space-evenly;">
+    <div>
+        <h2>Sale Infomation:</h2>
+        <div class="form-row">
+            <div class="col">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" name="date" id="date" placeholder="" required>
+                <script>
+                    document.getElementById('date').value = new Date().toDateInputValue();
+                </script>
+            </div>
+            <div class="col">
+                <label for="downPayment">Down Payment</label>
+                <input type="text" class="form-control" name="downPayment" id="downPayment" placeholder="" required>
+            </div>
+            <div class="col">
+                <label for="financedAmount">Financed Amount</label>
+                <input type="text" class="form-control" name="financedAmount" id="financedAmount" placeholder="" required>
+            </div>
         </div>
-        <div class="col">
-            <label for="downPayment">Down Payment</label>
-            <input type="text" class="form-control" name="downPayment" id="downPayment" placeholder="">
+        <div class="form-row">
+            <div class="col">
+                <label for="salePrice">Sale Price</label>
+                <input type="text" class="form-control" name="salePrice" id="salePrice" placeholder="" required>
+            </div>
+            <div class="col">
+                <label for="listedPrice">Listed Price</label>
+                <input type="text" class="form-control" name="listedPrice" id="listedPrice" placeholder="" required>
+            </div>
         </div>
-        <div class="col">
-            <label for="financedAmount">Financed Amount</label>
-            <input type="text" class="form-control" name="financedAmount" id="financedAmount" placeholder="">
+        <div class="form-row">
+            <h2>Salesperson:</h2>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="salePrice">Sale Price</label>
-            <input type="text" class="form-control" name="salePrice" id="salePrice" placeholder="">
-        </div>
-        <div class="col">
-            <label for="listedPrice">Listed Price</label>
-            <input type="text" class="form-control" name="listedPrice" id="listedPrice" placeholder="">
-        </div>
-    </div>
-    <div class="form-row">
-        <h2>Salesperson</h2>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="salespersonCommission">Commission %</label>
-            <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="25">
-        </div>
-        <div class="col">
-            <label for="salesPersonTaxID">Salesperson</label>
-            <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Salesperson'") as $row) {
-                    echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
-                }
-            ?>
-            </select>
-        </div>
-    </div>
-    <div class="form-row">
-        <h2>Vehicle</h2>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <script>
-                function onVinChange(event) {
-                    $.ajax({
-                        url: "vehicle.php",
-                        type: "POST",
-                        data: { 
-                            vin: event.target.value
-                        },
-                        success: function(data, status, xhr) {
-                            document.getElementById("vehicleColor").value = data.color;
-                            document.getElementById("vehicleMiles").value = data.miles;
-                            document.getElementById("vehicleCondition").value = data.condition;
-                        },
-                        error: function(jqXhr, textStatus, errorMessage) {
-                            showSnackbar(vagueError);
-                        }
-                    });
-                }
-            </script>
-            <label for="vin">VIN</label>
-            <select class="form-control" id="vin" name="vin" onchange="onVinChange(event)">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT vin FROM Vehicle WHERE sold = 0") as $row) {
-                    echo '<option value=' . $row['vin'] . '>' . $row['vin'] . '</option>';
-                }
-            ?>
-            </select>
-        </div>
-        <div class='col'>
-            <label for="vehicleColor">Color</label>
-            <input type="text" class="form-control" name="vehicleColor" id="vehicleColor" value="">
-        </div>
-        <div class='col'>
-            <label for="vehicleMiles">Miles</label>
-            <input type="number" class="form-control" name="vehicleMiles" id="vehicleMiles" value="">
-        </div>
-        <div class='col'>
-            <label for="vehicleCondition">Condition</label>
-            <input type="text" class="form-control" name="vehicleCondition" id="vehicleCondition" value="">
+        <div class="form-row">
+            <div class="col">
+                <label for="salespersonCommission">Commission %</label>
+                <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="25" required>
+            </div>
+            <div class="col">
+                <label for="salesPersonTaxID">Salesperson</label>
+                <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID" required>
+                <option selected>Choose</option>
+                <?php
+                    foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Salesperson'") as $row) {
+                        echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
+                    }
+                ?>
+                </select>
+            </div>
         </div>
     </div>
-    <div class="form-row">
-        <h2>Customer</h2>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="customerID">Customer</label>
-            <select class="form-control" id="customerID" name="customerID">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, tax_id AS id FROM Customer") as $row) {
-                    echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
-                }
-            ?>
-            </select>
+    <div>
+        <div class="form-row">
+            <h2>Vehicle Information:</h2>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <button type="submit" class="btn btn-primary">Generate Sale</button>
+        <div class="form-row">
+            <div class="col">
+                <script>
+                    function onVinChange(event) {
+                        $.ajax({
+                            url: "vehicle.php",
+                            type: "POST",
+                            data: { 
+                                vin: event.target.value
+                            },
+                            success: function(data, status, xhr) {
+                                document.getElementById("vehicleColor").value = data.color;
+                                document.getElementById("vehicleMiles").value = data.miles;
+                                document.getElementById("vehicleCondition").value = data.condition;
+                            },
+                            error: function(jqXhr, textStatus, errorMessage) {
+                                showSnackbar(vagueError);
+                            }
+                        });
+                    }
+                </script>
+                <label for="vin">VIN</label>
+                <select class="form-control" id="vin" name="vin" onchange="onVinChange(event)" required>
+                <option selected>Choose</option>
+                <?php
+                    foreach ($db->query("SELECT vin FROM Vehicle WHERE sold = 0") as $row) {
+                        echo '<option value=' . $row['vin'] . '>' . $row['vin'] . '</option>';
+                    }
+                ?>
+                </select>
+            </div>
+            <div class='col'>
+                <label for="vehicleColor">Color</label>
+                <input type="text" class="form-control" name="vehicleColor" id="vehicleColor" value="" required>
+            </div>
+            <div class='col'>
+                <label for="vehicleMiles">Miles</label>
+                <input type="number" class="form-control" name="vehicleMiles" id="vehicleMiles" value="" required>
+            </div>
+            <div class='col'>
+                <label for="vehicleCondition">Condition</label>
+                <input type="text" class="form-control" name="vehicleCondition" id="vehicleCondition" value="" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <h2>Customer:</h2>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="customerID">Customer</label>
+                <select class="form-control" id="customerID" name="customerID" required>
+                <option selected>Choose</option>
+                <?php
+                    foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, tax_id AS id FROM Customer") as $row) {
+                        echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
+                    }
+                ?>
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Generate Sale</button>
+            </div>
         </div>
     </div>
 </form>

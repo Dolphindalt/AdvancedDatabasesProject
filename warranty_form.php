@@ -4,14 +4,15 @@
     if ($method == "GET")
     {
 ?>
-<form action="warranty_form.php" method="POST">
+<h1>Warranty Form</h1>
+<form action="warranty_form.php" method="POST" style="padding-left: 2em;">
     <div class='form-row'>
-        <h1>Warranty Form</h1>
+        <h2>Warranty Infomation:</h2>
     </div>
     <div class='form-row'>
         <div class='col'>
             <label for="vin">VIN</label>
-            <select class="form-control" id="vin" name="vin">
+            <select class="form-control" id="vin" name="vin" required>
             <option selected>Choose</option>
             <?php
                 foreach ($db->query("SELECT vin FROM Vehicle") as $row) {
@@ -22,7 +23,7 @@
         </div>
         <div class='col'>
             <label for='customerID'>Customer</label>
-            <select class='form-control' id='customerID' name='customerID'>
+            <select class='form-control' id='customerID' name='customerID' required>
             <option selected>Choose</option>
             <?php
                 foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, tax_id AS id FROM Customer") as $row) {
@@ -33,7 +34,7 @@
         </div>
         <div class='col'>
             <label for="salesPersonTaxID">Salesperson</label>
-            <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID">
+            <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID" required>
             <option selected>Choose</option>
             <?php
                 foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Salesperson'") as $row) {
@@ -44,17 +45,17 @@
         </div>
         <div class="col">
             <label for="cosigner">Cosigner</label>
-            <input type="text" class="form-control" name="cosigner" id="cosigner" value="">
+            <input type="text" class="form-control" name="cosigner" id="cosigner" value="" required>
         </div>
     </div>
     <div id="warranty-sink">
 
     </div>
     <div class='form-row'>
-        <div class='col'>
+        <div class='col' style="display: inline-block;">
             <button type='button' class='btn btn-primary' onclick="growWarrantyForm()">Add Warranty</button>
         </div>
-        <div class='col'>
+        <div class='col' style="display: inline-block;">
             <button type='submit' class='btn btn-primary'>Generate</button>
         </div>
     </div>

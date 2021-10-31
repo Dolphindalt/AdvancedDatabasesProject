@@ -5,98 +5,108 @@
     {
 ?>
 
-<form action='purchase_form.php' method='post'>
-    <div class="form-row">
-        <div class="col">
-            <h1>Purchase Form</h1>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="date">Date</label>
-            <input type="date" class="form-control" name="date" id="date">
-            <script>
-                document.getElementById('date').value = new Date().toDateInputValue();
-            </script>
-        </div>
-        <div class="col">
-            <label for="salesPersonTaxID">Salesperson</label>
-            <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Buyer'") as $row) {
-                    echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
-                }
-            ?>
-            </select>
-        </div>
-        <div class="col">
-            <label for="sellerTaxID">Seller</label>
-            <select class="form-control" id="sellerTaxID" name="sellerTaxID">
-            <option selected>Choose</option>
-            <?php
-                foreach ($db->query("SELECT seller_tax_id, name FROM Seller") as $row) {
-                    $name_string = $row['name'];
-                    echo '<option value=' . $row['seller_tax_id'] . '>' . $name_string . '</option>';
-                }
-            ?>
-            </select>
-        </div>
-        <div class="col">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="isAuction" name="isAuction">
-                <label class="form-check-label" for="isAuction">
-                    Auction
-                </label>
+<h1 style="text-align: center;">Purchase Form</h1>
+<form action='purchase_form.php' method='post' style="display: flex; justify-content: space-evenly;">
+    <div>
+        <div class="form-row">
+            <div class="col">
+                <h2> Seller Info: </h2>
             </div>
         </div>
-        <div class="col">
-            <button type="button" class="btn btn-primary" onclick="toggleShowEnterSellerSection()">Enter new seller</button>
+        <div class="form-row">
+            <div class="col">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" name="date" id="date" required>
+                <script>
+                    document.getElementById('date').value = new Date().toDateInputValue();
+                </script>
+            </div>
+            <div class="col">
+                <label for="salesPersonTaxID">Salesperson</label>
+                <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID" required>
+                <option selected>Choose</option>
+                <?php
+                    foreach ($db->query("SELECT CONCAT(first_name, ' ', last_name) AS name, employee_id AS id FROM Employee WHERE role = 'Buyer'") as $row) {
+                        echo '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
+                    }
+                ?>
+                </select>
+            </div>
+            <div class="col">
+                <label for="sellerTaxID">Seller</label>
+                <select class="form-control" id="sellerTaxID" name="sellerTaxID" required>
+                <option selected>Choose</option>
+                <?php
+                    foreach ($db->query("SELECT seller_tax_id, name FROM Seller") as $row) {
+                        $name_string = $row['name'];
+                        echo '<option value=' . $row['seller_tax_id'] . '>' . $name_string . '</option>';
+                    }
+                ?>
+                </select>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="isAuction" name="isAuction">
+                    <label class="form-check-label" for="isAuction" style="display: inline-block;">
+                        Auction
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary" onclick="toggleShowEnterSellerSection()">Enter new seller</button>
+            </div>
         </div>
     </div>
-    <div class="form-row">
+    <div>
+        <div class="form-row">
+            <div class="col">
+                <h2> Add Address: </h2>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="col">
                 <label for="street">Street</label>
-                <input type="text" class="form-control" name="street" id="street">
+                <input type="text" class="form-control" name="street" id="street" required>
             </div>
             <div class="col">
                 <label for="city">City</label>
-                <input type="text" class="form-control" name="city" id="city">
+                <input type="text" class="form-control" name="city" id="city" required>
             </div>
             <div class="col">
                 <label for="state">State</label>
-                <input type="text" class="form-control" name="state" id="state">
+                <input type="text" class="form-control" name="state" id="state" required>
             </div>
             <div class="col">
                 <label for="zip">Postal/ZIP Code</label>
-                <input type="text" class="form-control" name="zip" id="zip">
+                <input type="text" class="form-control" name="zip" id="zip" required>
             </div>
         </div>
-    <div id='new-seller-sink' style="display: none;">
+        <div id='new-seller-sink' style="display: none;">
+            <div class="form-row">
+                <div class="col">
+                    <h2>Add New Seller</h2>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label for="newSellerTaxID">Seller Tax ID</label>
+                    <input type="text" class="form-control" name="newSellerTaxID" id="newSellerTaxID" required>
+                </div>
+                <div class="col">
+                    <label for="newSellerName">Seller Name</label>
+                    <input type="text" class="form-control" name="newSellerName" id="newSellerName" required>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" onclick="sendAddSeller()">Add Seller</button>
+                </div>
+            </div>
+        </div>
+        <div id="purchase-form-sink"></div>
         <div class="form-row">
             <div class="col">
-                <h2>Add New Seller</h2>
+                <button type="button" class="btn btn-primary" onclick="growPurchaseForm()">Add Purchase</button>
+                <button type="submit" class="btn btn-primary" >Submit</button>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="newSellerTaxID">Seller Tax ID</label>
-                <input type="text" class="form-control" name="newSellerTaxID" id="newSellerTaxID">
-            </div>
-            <div class="col">
-                <label for="newSellerName">Seller Name</label>
-                <input type="text" class="form-control" name="newSellerName" id="newSellerName">
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-primary" onclick="sendAddSeller()">Add Seller</button>
-            </div>
-        </div>
-    </div>
-    <div id="purchase-form-sink"></div>
-    <div class="form-row">
-        <div class="col">
-            <button type="button" class="btn btn-primary" onclick="growPurchaseForm()">Add Purchase</button>
-            <button type="submit" class="btn btn-primary" >Submit</button>
         </div>
     </div>
 </form>

@@ -49,3 +49,35 @@
     to {bottom: 0; opacity: 0;}
 } 
 /* End snackbar. */
+
+body {
+    background-color: #b0d3e6;
+    padding: 0 15% ;
+}
+
+form label{
+    display: block;
+}
+
+form input{
+    margin-bottom: 8px;
+}
+
+form {
+    border: 2px solid black;
+    padding-bottom: 8px;
+}
+
+form button {
+    margin-bottom: 1em;
+}
+
+h1{
+    text-align: center;
+}
+
+@media all and (orientation: portrait){
+    body {
+        padding: 0 5%;
+    }
+}

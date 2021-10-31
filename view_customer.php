@@ -19,36 +19,38 @@
         $customer = $customer[0];
         $customer['dob'] = date('Y-m-d', strtotime($customer['dob']));
 ?>
-<form action='view_customer.php' method='post'>
+
+<h1>Customer Information</h1>
+<form action='view_customer.php' method='post' style="padding-left: 2em;">
     <div class="form-row">
         <div class="col">
-            <h1>Customer Information</h1>
+            <h2>Customer</h2>
         </div>
     </div>
     <div class='form-row'>
         <div class='col'>
             <label for="firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $customer['first_name']; ?>">
+            <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $customer['first_name']; ?>" required>
         </div>
         <div class='col'>
             <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $customer['last_name']; ?>">
+            <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $customer['last_name']; ?>" required>
         </div>
     </div>
     <div class='form-row'>
         <div class='col'>
             <label for="phoneNumber">Phone Number</label>
-            <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" value="<?php echo $customer['phone_number']; ?>">
+            <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" value="<?php echo $customer['phone_number']; ?>" required>
         </div>
         <div class='col'>
             <label for="gender">Gender</label>
-            <input type="tel" class="form-control" name="gender" id="gender" value="<?php echo $customer['gender']; ?>">
+            <input type="tel" class="form-control" name="gender" id="gender" value="<?php echo $customer['gender']; ?>" required>
         </div>
     </div>
     <div class='form-row'>
         <div class='col'>
             <label for="dateOfBirth">Date of Birth</label>
-            <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" value="<?php echo $customer['dob']; ?>">
+            <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" value="<?php echo $customer['dob']; ?>" required>
         </div>
         <div class='col'>
             <label for="taxPayerID">Tax Payer ID</label>
@@ -68,19 +70,19 @@
     <div class="form-row">
         <div class="col">
             <label for="street">Street</label>
-            <input type="text" class="form-control" name="street" id="street" value="<?php echo $location['address'] ?>">
+            <input type="text" class="form-control" name="street" id="street" value="<?php echo $location['address'] ?>" required>
         </div>
         <div class="col">
             <label for="city">City</label>
-            <input type="text" class="form-control" name="city" id="city" value="<?php echo $location['city'] ?>">
+            <input type="text" class="form-control" name="city" id="city" value="<?php echo $location['city'] ?>" required>
         </div>
         <div class="col">
             <label for="state">State</label>
-            <input type="text" class="form-control" name="state" id="state" value="<?php echo $location['state'] ?>">
+            <input type="text" class="form-control" name="state" id="state" value="<?php echo $location['state'] ?>" required>
         </div>
         <div class="col">
             <label for="zip">Postal/ZIP Code</label>
-            <input type="text" class="form-control" name="zip" id="zip" value="<?php echo $location['zip'] ?>">
+            <input type="text" class="form-control" name="zip" id="zip" value="<?php echo $location['zip'] ?>" required>
         </div>
     </div>
     <div class="form-row">

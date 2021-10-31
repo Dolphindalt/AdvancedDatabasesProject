@@ -4,62 +4,69 @@
     if ($method == "GET")
     {
 ?>
-<h1>Add Customer Form</h1>
+<h1 style="text-align: center;">Customer Information Form</h1>
 <form action='add_customer.php' method='post'>
-    <div class='form-row'>
-        <div class='col'>
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name">
+    <div  style="display: flex; justify-content: space-evenly;">
+        <div style="display: inline-block;">
+            <h2> Add Customer</h2>
+            <div class='form-row'>
+                <div class='col'>
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name" required>
+                </div>
+                <div class='col'>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name" required>
+                </div>
+            </div>
+            <div class='form-row'>
+                <div class='col'>
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone number" required>
+                </div>
+                <div class='col'>
+                    <label for="gender">Gender</label>
+                    <input type="tel" class="form-control" name="gender" id="gender" placeholder="Enter your gender"required>
+                </div>
+            </div>
+            <div class='form-row'>
+                <div class='col'>
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" placeholder="Enter your date of birth"required>
+                </div>
+                <div class='col'>
+                    <label for="taxPayerID">Tax Payer ID</label>
+                    <input type="text" class="form-control" name="taxPayerID" id="taxPayerID" placeholder="Enter your tax payer ID"required>
+                </div>
+            </div>
         </div>
-        <div class='col'>
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name">
-        </div>
-    </div>
-    <div class='form-row'>
-        <div class='col'>
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone number">
-        </div>
-        <div class='col'>
-            <label for="gender">Gender</label>
-            <input type="tel" class="form-control" name="gender" id="gender" placeholder="Enter your gender">
-        </div>
-    </div>
-    <div class='form-row'>
-        <div class='col'>
-            <label for="dateOfBirth">Date of Birth</label>
-            <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" placeholder="Enter your date of birth">
-        </div>
-        <div class='col'>
-            <label for="taxPayerID">Tax Payer ID</label>
-            <input type="text" class="form-control" name="taxPayerID" id="taxPayerID" placeholder="Enter your tax payer ID">
-        </div>
-    </div>
-    <div class="form-row">
-        <h2>Billing Address</h2>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="street">Street</label>
-            <input type="text" class="form-control" name="street" id="street" placeholder="Enter your street">
-        </div>
-        <div class="col">
-            <label for="city">City</label>
-            <input type="text" class="form-control" name="city" id="city" placeholder="Enter your city">
-        </div>
-        <div class="col">
-            <label for="state">State</label>
-            <input type="text" class="form-control" name="state" id="state" placeholder="Enter your state">
-        </div>
-        <div class="col">
-            <label for="zip">Postal/ZIP Code</label>
-            <input type="text" class="form-control" name="zip" id="zip" placeholder="Enter your postal/ZIP code">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div style="display: inline-block;">
+            <div class="form-row">
+                <h2>Billing Address</h2>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label for="street">Street</label>
+                    <input type="text" class="form-control" name="street" id="street" placeholder="Enter your street" required>
+                </div>
+                <div class="col">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" name="city" id="city" placeholder="Enter your city" required>
+                </div>
+                <div class="col">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" name="state" id="state" placeholder="Enter your state" required>
+                </div>
+                <div class="col">
+                    <label for="zip">Postal/ZIP Code</label>
+                    <input type="text" class="form-control" name="zip" id="zip" placeholder="Enter your postal/ZIP code" required>
+                </div>
+                <div class="form-row" >
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </form>
