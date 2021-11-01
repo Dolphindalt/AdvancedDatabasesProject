@@ -90,11 +90,11 @@
             <div class="form-row">
                 <div class="col">
                     <label for="newSellerTaxID">Seller Tax ID</label>
-                    <input type="text" class="form-control" name="newSellerTaxID" id="newSellerTaxID" required>
+                    <input type="text" class="form-control" name="newSellerTaxID" id="newSellerTaxID" >
                 </div>
                 <div class="col">
                     <label for="newSellerName">Seller Name</label>
-                    <input type="text" class="form-control" name="newSellerName" id="newSellerName" required>
+                    <input type="text" class="form-control" name="newSellerName" id="newSellerName" >
                 </div>
                 <div class="col">
                     <button type="button" class="btn btn-primary" onclick="sendAddSeller()">Add Seller</button>
@@ -160,10 +160,10 @@
             $style = $_POST['style' . $p];
             $condition = $_POST['condition' . $p];
 
-            $statement = $db->prepare("INSERT INTO Vehicle (`vin`, `make`, `model`, `year`, `color`, `miles`, `style`, `condition`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            $statement = $db->prepare("INSERT INTO Vehicle (`vin`, `make`, `model`, `year`, `color`, `miles`, `style`, `condition`, sold) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
             ON DUPLICATE KEY UPDATE `make` = VALUES(`make`), `model` = VALUES(`model`), `year` = VALUES(`year`), 
-            `color` = VALUES(`color`), `miles` = VALUES(`miles`), `style` = VALUES(`style`), `condition` = VALUES(`condition`);");
+            `color` = VALUES(`color`), `miles` = VALUES(`miles`), `style` = VALUES(`style`), `condition` = VALUES(`condition`), sold = 0;");
             $statement->bindParam(1, $vin, PDO::PARAM_STR);
             $statement->bindParam(2, $make, PDO::PARAM_STR);
             $statement->bindParam(3, $model, PDO::PARAM_STR);

@@ -88,7 +88,6 @@ CREATE TABLE `Items` (
 
 CREATE TABLE `Payment` (
   `payment_id` int PRIMARY KEY AUTO_INCREMENT,
-  `payment_date` datetime,
   `due_date` datetime,
   `paid_date` datetime,
   `amount` double,
@@ -103,8 +102,8 @@ CREATE TABLE `Sale` (
   `financed_amount` double
 );
 
-CREATE TABLE `EmployementHistory` (
-  `employement_history_id` int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE `EmploymentHistory` (
+  `employment_history_id` int PRIMARY KEY AUTO_INCREMENT,
   `employer` varchar(255),
   `title` varchar(255),
   `supervisor` varchar(255),
@@ -165,9 +164,7 @@ CREATE TABLE `Warranty_Items` (
 
 CREATE TABLE `Customer_Payments` (
   `tax_id` int,
-  `payment_id` int,
-  `total_late_payments` int,
-  `average_number_of_late_days` int
+  `payment_id` int
 );
 
 CREATE TABLE `Vehicle_Sale` (
@@ -198,7 +195,7 @@ CREATE TABLE `Sale_CustomerLocation` (
 
 CREATE TABLE `Customer_EmploymentHistory` (
   `tax_id` int,
-  `employement_history_id` int
+  `employment_history_id` int
 );
 
 ALTER TABLE `Purchase` ADD FOREIGN KEY (`location_id`) REFERENCES `Location` (`location_id`);
@@ -259,6 +256,6 @@ ALTER TABLE `Sale_CustomerLocation` ADD FOREIGN KEY (`location_id`) REFERENCES `
 
 ALTER TABLE `Customer_EmploymentHistory` ADD FOREIGN KEY (`tax_id`) REFERENCES `Customer` (`tax_id`);
 
-ALTER TABLE `Customer_EmploymentHistory` ADD FOREIGN KEY (`employement_history_id`) REFERENCES `EmployementHistory` (`employement_history_id`);
+ALTER TABLE `Customer_EmploymentHistory` ADD FOREIGN KEY (`employment_history_id`) REFERENCES `EmploymentHistory` (`employment_history_id`);
 
 COMMIT;

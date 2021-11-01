@@ -17,7 +17,7 @@
             <div class="form-row">
                 <div class="col">
                     <label for="customerID">Select Customer</label>
-                    <select class="form-control" id="customerID" required >
+                    <select class="form-control" id="customerID" name="customerID" required >
                     <option selected>Choose</option>
                     <?php
                         foreach ($db->query("SELECT first_name, last_name, tax_id FROM Customer") as $row) {
@@ -70,7 +70,7 @@
 </form>
 <?php
     } else if ($method == "POST") {
-        $db->exec("BEGIN TRANSACTION;");
+        $db->exec("START TRANSACTION;");
 
         $tax_id = $_POST['customerID'];
 
@@ -82,7 +82,7 @@
             $employerAddress = $_POST['employerAddress' . $i];
             $startDate = $_POST['startDate' . $i];
 
-            $statement = $db->prepare("CALL addEmploymentHistoryEntry(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $statement = $db->prepare("CALL addEmploymentHistoryEntry(?, ?, ?, ?, ?, ?, ?)");
             $statement->bindParam(1, $tax_id, PDO::PARAM_INT);
             $statement->bindParam(2, $employer, PDO::PARAM_STR);
             $statement->bindParam(3, $title, PDO::PARAM_STR);
@@ -94,6 +94,12 @@
         }
 
         $db->exec("COMMIT;");
+
+        ?>
+        <div class="alert alert-primary" role="alert">
+            Employment history records created. Click <a href="view_employment_history.php?taxid=<?php echo $tax_id; ?>">here</a> to view it.
+        </div>
+        <?php
     }
     require_once 'footer.php';
 ?>

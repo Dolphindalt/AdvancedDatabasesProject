@@ -47,6 +47,10 @@
             <label for="cosigner">Cosigner</label>
             <input type="text" class="form-control" name="cosigner" id="cosigner" value="" required>
         </div>
+        <div class="col">
+            <label for="installments">Monthly Installments</label>
+            <input type="number" class="form-control" name="installments" id="installments" value="12" required>
+        </div>
     </div>
     <div id="warranty-sink">
 
@@ -68,11 +72,11 @@
         $customerID = $_POST['customerID'];
         $salesPersonTaxID = $_POST['salesPersonTaxID'];
         $cosigner = $_POST['cosigner'];
+        $installments = $_POST['installments'];
 
         $db->query("START TRANSACTION;");
 
         $total_cost = 0;
-        $monthly_cost = 0;
 
         for ($w = 1; key_exists('startDate' . $w, $_POST); $w++)
         {
@@ -81,12 +85,7 @@
             $cost = $_POST['cost' . $w];
             $deductible = $_POST['deductible' . $w];
 
-            $date_diff = strtotime($endDate) - strtotime($startDate);
-            $day_diff = round($date_diff / (60 * 60 * 24));
-
-            $total_cost += $cost;
-            if ($deductible != 0)
-                $monthly_cost += ($cost - $deductible) / $day_diff;
+            $total_cost += ($cost - $deductible);
 
             $statement = $db->prepare("INSERT INTO Warranty (start_date, end_date, cost, deductible) VALUES (?, ?, ?, ?);");
             $statement->bindParam(1, $startDate, PDO::PARAM_STR);
@@ -105,6 +104,8 @@
                 $statement->execute();
             }
         }
+
+        $monthly_cost = $floatval($total_cost) / $floatval($installments);
 
         $nice_date = date('Y-m-d');
         $statement = $db->prepare("INSERT INTO WarrantyForm (cosigner, date_sold, total_cost, monthly_cost) VALUES (?, ?, ?, ?);");
@@ -132,6 +133,28 @@
         $statement->bindParam(1, $warranty_form_id, PDO::PARAM_INT);
         $statement->bindParam(2, $customerID, PDO::PARAM_STR);
         $statement->execute();
+
+        // Generate financed payments.
+        $now = time();
+        if ($monthly_cost > 0) {
+            for ($i = 0; $i < $installments; $i++) {
+                $now = strtotime("+1 month", $now);
+                $nice_date = date('Y-m-d', $now);
+                $statement = $db->prepare("INSERT INTO Payment (due_date, amount) VALUES (?, ?);");
+                $statement->bindParam(1, $nice_date, PDO::PARAM_STR);
+                $statement->bindParam(2, $monthly_cost, PDO::PARAM_INT);
+                $statement->execute();
+
+                $query = $db->query("SELECT LAST_INSERT_ID() AS payment_id;");
+                $query->execute();
+                $payment_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['payment_id'];
+
+                $statement = $db->prepare("INSERT INTO Customer_Payments (tax_id, payment_id) VALUES (?, ?);");
+                $statement->bindParam(1, $customerID, PDO::PARAM_INT);
+                $statement->bindParam(2, $payment_id, PDO::PARAM_INT);
+                $statement->execute();
+            }
+        }
 
         $db->query("COMMIT;");
 

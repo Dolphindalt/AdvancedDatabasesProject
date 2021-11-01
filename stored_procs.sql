@@ -53,7 +53,7 @@ CREATE OR REPLACE PROCEDURE insertEmploymentHistory(
     IN start_date VARCHAR(255)
 )
 BEGIN
-    INSERT INTO EmployementHistory (employer, title, supervisor, phone, address, start_date)
+    INSERT INTO EmploymentHistory (employer, title, supervisor, phone, address, start_date)
     VALUES (employer, title, supervisor, phone, address, start_date);
 END //
 DELIMITER ;
@@ -88,9 +88,9 @@ CREATE OR REPLACE PROCEDURE addEmploymentHistoryEntry(
     IN start_date VARCHAR(255)
 )
 BEGIN
-    INSERT INTO EmployementHistory (employer, title, supervisor, phone, address, start_date)
+    INSERT INTO EmploymentHistory (employer, title, supervisor, phone, address, start_date)
     VALUES (employer, title, supervisor, phone, address, STR_TO_DATE(start_date, '%Y-%c-%e'));
-    INSERT INTO Customer_EmploymentHistory (tax_id, location_id) VALUES (tax_id, LAST_INSERT_ID());
+    INSERT INTO Customer_EmploymentHistory (tax_id, employment_history_id) VALUES (tax_id, LAST_INSERT_ID());
 END //
 DELIMITER ;
 
@@ -105,15 +105,15 @@ CREATE OR REPLACE PROCEDURE removeEmploymentHistoryEntry(
 )
 BEGIN
     DECLARE eid INT;
-    SELECT eh.employement_history_id 
+    SELECT eh.employment_history_id 
     FROM Customer_EmploymentHistory AS ceh 
-    LEFT JOIN EmployementHistory AS eh
-        ON eh.employement_history_id = ceh.employement_history_id
+    LEFT JOIN EmploymentHistory AS eh
+        ON eh.employment_history_id = ceh.employment_history_id
     WHERE eh.employer = employer AND eh.title = title AND eh.supervisor = supervisor AND eh.phone = phone AND 
     eh.address = address AND ceh.tax_id = tax_id
     INTO eid;
-    DELETE FROM Customer_EmploymentHistory WHERE tax_id = tax_id AND employement_history_id = eid;
-    DELETE FROM EmployementHistory WHERE eh.employer = employer AND eh.title = title AND 
+    DELETE FROM Customer_EmploymentHistory WHERE tax_id = tax_id AND employment_history_id = eid;
+    DELETE FROM EmploymentHistory WHERE eh.employer = employer AND eh.title = title AND 
     eh.supervisor = supervisor AND eh.phone = phone AND eh.address = address;
 END //
 DELIMITER ;

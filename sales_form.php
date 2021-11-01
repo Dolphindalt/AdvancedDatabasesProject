@@ -7,7 +7,7 @@
 <h1>Sales Form</h1>
 <form action='sales_form.php' method='post' style="display: flex; justify-content: space-evenly;">
     <div>
-        <h2>Sale Infomation:</h2>
+        <h2>Sale Information:</h2>
         <div class="form-row">
             <div class="col">
                 <label for="date">Date</label>
@@ -23,6 +23,10 @@
             <div class="col">
                 <label for="financedAmount">Financed Amount</label>
                 <input type="text" class="form-control" name="financedAmount" id="financedAmount" placeholder="" required>
+            </div>
+            <div class="col">
+                <label for="installments">Monthly Installments</label>
+                <input type="number" class="form-control" name="installments" id="installments" value="12" required>
             </div>
         </div>
         <div class="form-row">
@@ -40,8 +44,8 @@
         </div>
         <div class="form-row">
             <div class="col">
-                <label for="salespersonCommission">Commission %</label>
-                <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="25" required>
+                <label for="salespersonCommission">Commission</label>
+                <input type="number" class="form-control" name="salespersonCommission" id="salespersonCommission" value="0" onchange="onCommissionChange()" required>
             </div>
             <div class="col">
                 <label for="salesPersonTaxID">Salesperson</label>
@@ -136,11 +140,12 @@
         $date = $_POST['date'];
         $downPayment = $_POST['downPayment'];
         $financedAmount = $_POST['financedAmount'];
-        $totalDue = $downPayment + $financedAmount;
+        $commission = $_POST['salespersonCommission'];
+        $totalDue = $downPayment + $financedAmount + $commission;
         $salePrice = $_POST['salePrice'];
         $listedPrice = $_POST['listedPrice'];
+        $installments = $_POST['installments'];
 
-        $commission = $_POST['salespersonCommission'];
         $salespersonID = $_POST['salesPersonTaxID'];
         $vin = $_POST['vin'];
         $customerID = $_POST['customerID'];
@@ -190,6 +195,29 @@
         $statement->bindParam(1, $sale_id, PDO::PARAM_INT);
         $statement->bindParam(2, $customerID, PDO::PARAM_INT);
         $statement->execute();
+
+        // Generate financed payments.
+        $monthly_cost = floatval($totalDue - $downPayment) / floatval($installments);
+        $now = time();
+        if ($monthly_cost > 0) {
+            for ($i = 0; $i < $installments; $i++) {
+                $now = strtotime("+1 month", $now);
+                $nice_date = date('Y-m-d', $now);
+                $statement = $db->prepare("INSERT INTO Payment (due_date, amount) VALUES (?, ?);");
+                $statement->bindParam(1, $nice_date, PDO::PARAM_STR);
+                $statement->bindParam(2, $monthly_cost, PDO::PARAM_STR);
+                $statement->execute();
+
+                $query = $db->query("SELECT LAST_INSERT_ID() AS payment_id;");
+                $query->execute();
+                $payment_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['payment_id'];
+
+                $statement = $db->prepare("INSERT INTO Customer_Payments (tax_id, payment_id) VALUES (?, ?);");
+                $statement->bindParam(1, $customerID, PDO::PARAM_INT);
+                $statement->bindParam(2, $payment_id, PDO::PARAM_INT);
+                $statement->execute();
+            }
+        }
 
         $db->query("COMMIT;")->execute();
 
