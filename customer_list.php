@@ -13,13 +13,19 @@
         $start = $page_number * $items_per_page; // 10 items per page
         $end = $start + $items_per_page;
 
+        $statement = $db->prepare("SELECT COUNT(*) AS count FROM Customer;");
+        $statement->execute();
+        $total_customers = $statement->fetchAll(PDO::FETCH_ASSOC)[0]['count'];
+
+        $total_pages = $total_customers / $items_per_page;
+
         $statement = $db->prepare("SELECT * FROM Customer LIMIT ?,?;");
         $statement->bindParam(1, $start, PDO::PARAM_INT);
         $statement->bindParam(2, $end, PDO::PARAM_INT);
         $statement->execute();
         $customers = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
             <th scope="col">Tax ID</th>
@@ -45,6 +51,15 @@
 ?>
         </tbody>
     </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <?php
+            for ($i = 0; $i < $total_pages; $i++) {
+                echo "<li class='page-item'><a class='page-link' href='customer_list.php?page=" . $i . "'>" . ($i + 1)  ."</a></li>";
+            }
+            ?>
+        </ul>
+    </nav>
 <?php
     }
     require_once 'footer.php';

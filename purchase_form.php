@@ -22,7 +22,7 @@
                 </script>
             </div>
             <div class="col">
-                <label for="salesPersonTaxID">Salesperson</label>
+                <label for="salesPersonTaxID">Buyer</label>
                 <select class="form-control" id="salesPersonTaxID" name="salesPersonTaxID" required>
                 <option selected>Choose</option>
                 <?php

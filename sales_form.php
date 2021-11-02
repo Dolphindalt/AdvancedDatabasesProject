@@ -196,6 +196,16 @@
         $statement->bindParam(2, $customerID, PDO::PARAM_INT);
         $statement->execute();
 
+        $statement = $db->prepare("SELECT location_id FROM Sale_CustomerLocation WHERE sale_id = ?;");
+        $statement->bindParam(1, $sale_id, PDO::PARAM_INT);
+        $statement->execute();
+        $location_id = $statement->fetchAll(PDO::FETCH_ASSOC)[0]['location_id'];
+
+        $statement = $db->prepare("INSERT INTO Sale_CustomerLocation (sale_id, location_id) VALUES (?, ?);");
+        $statement->bindParam(1, $sale_id, PDO::PARAM_INT);
+        $statement->bindParam(2, $customerID, PDO::PARAM_INT);
+        $statement->execute();
+
         // Generate financed payments.
         $monthly_cost = floatval($totalDue - $downPayment) / floatval($installments);
         $now = time();

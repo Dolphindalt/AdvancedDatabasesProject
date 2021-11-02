@@ -38,7 +38,7 @@
         $statement->execute();
         $histories = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
             <th scope="col">Start Date</th>
