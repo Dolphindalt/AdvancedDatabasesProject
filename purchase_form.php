@@ -121,7 +121,7 @@
         $seller_tax_id = $_POST['sellerTaxID'];
         $employee_tax_id = $_POST['salesPersonTaxID'];
         $date = $_POST['date'];
-        $isAuction = $_POST['isAuction'];
+        $isAuction = key_exists('isAuction', $_POST) ? $_POST['isAuction'] : 0;
 
         $street = $_POST['street'];
         $city = $_POST['city'];

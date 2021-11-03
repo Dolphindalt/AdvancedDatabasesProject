@@ -32,7 +32,7 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="index.php">Home</a>
         </li>
         <li class="nav-item dropdown">
@@ -61,6 +61,9 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="purchase_form.php">New Purchase</a>
             <a class="dropdown-item" href="purchase_list.php?page=0">View Purchases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="vehicles_list.php?page=0">Vehicles</a>
         </li>
         </ul>
         <!--form class="form-inline my-2 my-lg-0">

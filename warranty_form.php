@@ -94,6 +94,15 @@
             $statement->bindParam(4, $deductible, PDO::PARAM_INT);
             $statement->execute();
 
+            $query = $db->query("SELECT LAST_INSERT_ID() AS warranty_id;");
+            $query->execute();
+            $warranty_id = $query->fetchAll(PDO::FETCH_ASSOC)[0]['warranty_id'];
+
+            $statement = $db->prepare("INSERT INTO Vehicle_Warranty (warranty_id, vin) VALUES (?, ?);");
+            $statement->bindParam(1, $warranty_id, PDO::PARAM_INT);
+            $statement->bindParam(2, $vin, PDO::PARAM_STR);
+            $statement->execute();
+
             for ($i = 1; key_exists('description' . $w . $i, $_POST); $i++)
             {
                 $item_id = $w . $i;
@@ -102,10 +111,14 @@
                 $statement = $db->prepare("INSERT INTO Items (description) VALUES (?);");
                 $statement->bindParam(1, $description, PDO::PARAM_STR);
                 $statement->execute();
+
+                $statement = $db->prepare("INSERT INTO Warranty_Items (warranty_id, item_id) VALUES (?, LAST_INSERT_ID());");
+                $statement->bindParam(1, $warranty_id, PDO::PARAM_INT);
+                $statement->execute();
             }
         }
 
-        $monthly_cost = $floatval($total_cost) / $floatval($installments);
+        $monthly_cost = floatval($total_cost) / floatval($installments);
 
         $nice_date = date('Y-m-d');
         $statement = $db->prepare("INSERT INTO WarrantyForm (cosigner, date_sold, total_cost, monthly_cost) VALUES (?, ?, ?, ?);");
@@ -160,7 +173,7 @@
 
         ?>
         <div class="alert alert-primary" role="alert">
-                Warranties created. Click <a href="view_warranties.php?vin=<?php echo $vin; ?>">here</a> to view warranties on <?php echo $vin; ?>.
+                Warranties created. Click <a href="view_vehicle.php?vin=<?php echo $vin; ?>">here</a> to view warranties on <?php echo $vin; ?>.
         </div>
         <?php
     }

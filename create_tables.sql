@@ -152,6 +152,11 @@ CREATE TABLE `Vehicle_WarrantyForm` (
   `vin` varchar(255)
 );
 
+CREATE TABLE `Vehicle_Warranty` (
+  `warranty_id` int,
+  `vin` varchar(255)
+);
+
 CREATE TABLE `Customers_WarrantyForm` (
   `warranty_form_id` int,
   `tax_id` int
