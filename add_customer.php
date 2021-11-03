@@ -6,7 +6,7 @@
 ?>
 <h1 style="text-align: center;">Customer Information Form</h1>
 <form action='add_customer.php' method='post'>
-    <div  style="display: flex; justify-content: space-evenly;">
+    <div  style="display: flex; padding-left: 3em; justify-content: space-evenly;">
         <div style="display: inline-block;">
             <h2> Add Customer</h2>
             <div class='form-row'>

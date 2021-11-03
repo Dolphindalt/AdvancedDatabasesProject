@@ -26,7 +26,7 @@
         $info = $statement->fetchAll(PDO::FETCH_ASSOC)[0];
 ?>
 <h1>Sales Form</h1>
-<form action='sales_form.php' method='post' style="display: flex; justify-content: space-evenly;">
+<form action='sales_form.php' method='post' style="display: flex; justify-content: space-evenly; padding-left: 3em;">
     <div>
         <h2>Sale Information:</h2>
         <div class="form-row">

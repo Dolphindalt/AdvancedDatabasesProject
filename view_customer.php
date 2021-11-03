@@ -21,7 +21,7 @@
 ?>
 
 <h1>Customer Information</h1>
-<form action='view_customer.php' method='post' style="padding-left: 2em;">
+<form action='view_customer.php' method='post' style="padding-left: 3em;">
     <div class="form-row">
         <div class="col">
             <h2>Customer</h2>

@@ -8,11 +8,11 @@
 <h1 style="text-align: center;">Employment History Form</h1>
 <form action='edit_employment_history.php' method='post'>
     <div class="form-row">
-        <div class="col" style="text-align: center;">
+        <div class="col" style="text-align: center; padding-left: 2em;">
             <h2>Enter Employment History:</h2>
         </div>
     </div>
-    <div id='employeeFormSink' style="display: flex; justify-content: space-evenly;">
+    <div id='employeeFormSink' style="display: flex; justify-content: space-evenly; padding-left: 2em;">
         <div>
             <div class="form-row">
                 <div class="col">

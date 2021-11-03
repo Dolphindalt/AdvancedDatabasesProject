@@ -25,6 +25,8 @@
         $info = $statement->fetchAll(PDO::FETCH_ASSOC)[0];
 ?>
 <h1>Purchase Record</h1>
+<form method='post' style="display: flex-grow; justify-content: space-evenly; padding-left: 3em;">
+
 <div class="form-row">
     <div class="col">
         <label>Date</label>
