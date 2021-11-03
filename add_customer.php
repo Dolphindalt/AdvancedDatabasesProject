@@ -95,7 +95,11 @@
         $statement->bindParam(10, $zip, PDO::PARAM_STR);
         $statement->execute();
         
-        header("Location: view_customer.php/?taxid=" . $tax_id);
+        ?>
+            <div class="alert alert-primary" role="alert">
+                Customer record created. Click <a href="view_customer.php?taxid=<?php echo $tax_id; ?>">here</a> to view it.
+            </div>
+        <?php
     }
     require_once 'footer.php';
 ?>

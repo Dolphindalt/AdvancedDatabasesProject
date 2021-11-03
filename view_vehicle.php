@@ -126,61 +126,65 @@
             <?php
         }
     }
-?>
+
+        // Show warranties if sold. 
+        if ($vehicle['sold'] == 1) {
+            ?>
             <div class='form-row'>
                 <div class='col'>
                     <h3>Warranties</h3>
                 </div>
             </div>
-<?php
-
-        // Show warranties if sold. 
-        if ($vehicle['sold'] == 1) {
+            <?php
             $statement = $db->prepare("SELECT * FROM Vehicle_Warranty AS vw LEFT JOIN Warranty AS w ON w.warranty_id = vw.warranty_id WHERE vw.vin = ?;");
             $statement->bindParam(1, $vin, PDO::PARAM_STR);
             $statement->execute();
             $warranties = $statement->fetchAll(PDO::FETCH_ASSOC);
             $tid = 1;
-            foreach ($warranties as $warranty) {
-                ?>
-                <div class='form-row'>
-                    <div class='col'>
-                        <h4>Warranty <?php echo $tid++; ?></h4>
-                    </div>
-                </div>
-                <div class='form-row'>
-                    <div class='col'>
-                        <label>Start Date</label>
-                        <input type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime($warranty['start_date'])); ?>" readonly>
-                    </div>
-                    <div class='col'>
-                        <label>End Date</label>
-                        <input type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime($warranty['end_date'])); ?>" readonly>
-                    </div>
-                    <div class='col'>
-                        <label>Total Cost</label>
-                        <input type="text" class="form-control" value="<?php echo "$" . $warranty['cost']; ?>" readonly>
-                    </div>
-                    <div class='col'>
-                        <label>Deductible</label>
-                        <input type="text" class="form-control" value="<?php echo "$" . $warranty['deductible']; ?>" readonly>
-                    </div>
-                </div>
-                <div class='form-row'>
-                <?php
-                $statement = $db->prepare("SELECT * FROM Warranty_Items AS wi LEFT JOIN Items AS i ON wi.item_id = i.item_id WHERE wi.warranty_id = ?;");
-                $statement->bindParam(1, $warranty['warranty_id'], PDO::PARAM_INT);
-                $statement->execute();
-                $items = $statement->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($items as $item) {
+            if (count($warranties) == 0) {
+                echo "<p>No warranties.</p>";
+            } else {
+                foreach ($warranties as $warranty) {
                     ?>
-                        <label>Item Covered</label>
-                        <input type="text" class="form-control" value="<?php echo $item['description']; ?>" readonly>
+                    <div class='form-row'>
+                        <div class='col'>
+                            <h4>Warranty <?php echo $tid++; ?></h4>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col'>
+                            <label>Start Date</label>
+                            <input type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime($warranty['start_date'])); ?>" readonly>
+                        </div>
+                        <div class='col'>
+                            <label>End Date</label>
+                            <input type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime($warranty['end_date'])); ?>" readonly>
+                        </div>
+                        <div class='col'>
+                            <label>Total Cost</label>
+                            <input type="text" class="form-control" value="<?php echo "$" . $warranty['cost']; ?>" readonly>
+                        </div>
+                        <div class='col'>
+                            <label>Deductible</label>
+                            <input type="text" class="form-control" value="<?php echo "$" . $warranty['deductible']; ?>" readonly>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                    <?php
+                    $statement = $db->prepare("SELECT * FROM Warranty_Items AS wi LEFT JOIN Items AS i ON wi.item_id = i.item_id WHERE wi.warranty_id = ?;");
+                    $statement->bindParam(1, $warranty['warranty_id'], PDO::PARAM_INT);
+                    $statement->execute();
+                    $items = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($items as $item) {
+                        ?>
+                            <label>Item Covered</label>
+                            <input type="text" class="form-control" value="<?php echo $item['description']; ?>" readonly>
+                        <?php
+                    }
+                    ?>
+                    </div>
                     <?php
                 }
-                ?>
-                </div>
-                <?php
             }
         }
 

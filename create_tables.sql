@@ -3,113 +3,113 @@ USE rmn_auto;
 START TRANSACTION;
 
 CREATE TABLE `Employee` (
-  `employee_id` int PRIMARY KEY,
-  `role` varchar(255),
-  `wage` double,
-  `first_name` varchar(255),
-  `last_name` varchar(255),
-  `phone_number` varchar(255),
-  `gender` varchar(255),
-  `dob` datetime
+  `employee_id` INT PRIMARY KEY,
+  `role` VARCHAR(255),
+  `wage` DOUBLE,
+  `first_name` VARCHAR(255),
+  `last_name` VARCHAR(255),
+  `phone_number` VARCHAR(255),
+  `gender` VARCHAR(255),
+  `dob` DATETIME
 );
 
 CREATE TABLE `Customer` (
-  `tax_id` int PRIMARY KEY,
-  `first_name` varchar(255),
-  `last_name` varchar(255),
-  `phone_number` varchar(255),
-  `gender` varchar(255),
-  `dob` datetime
+  `tax_id` INT PRIMARY KEY,
+  `first_name` VARCHAR(255),
+  `last_name` VARCHAR(255),
+  `phone_number` VARCHAR(255),
+  `gender` VARCHAR(255),
+  `dob` DATETIME
 );
 
 CREATE TABLE `Location` (
-  `location_id` int PRIMARY KEY AUTO_INCREMENT,
-  `address` varchar(255),
-  `city` varchar(255),
-  `state` varchar(2),
-  `ZIP` varchar(10)
+  `location_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `address` VARCHAR(255),
+  `city` VARCHAR(255),
+  `state` VARCHAR(2),
+  `ZIP` VARCHAR(10)
 );
 
 CREATE TABLE `Repair` (
-  `repair_id` int PRIMARY KEY AUTO_INCREMENT,
-  `description` varchar(255),
-  `material_cost` double,
-  `labor_cost` double
+  `repair_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `description` VARCHAR(255),
+  `material_cost` DOUBLE,
+  `labor_cost` DOUBLE
 );
 
 CREATE TABLE `Purchase` (
-  `purchase_id` int PRIMARY KEY AUTO_INCREMENT,
-  `date` datetime,
-  `location_id` int,
+  `purchase_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `date` DATETIME,
+  `location_id` INT,
   `is_auction` bit,
-  `seller_id` int,
-  `tax_id` int
+  `seller_id` INT,
+  `tax_id` INT
 );
 
 CREATE TABLE `Vehicle` (
-  `vin` varchar(255) PRIMARY KEY,
-  `make` varchar(255),
-  `model` varchar(255),
-  `year` int,
-  `color` varchar(255),
-  `miles` double,
-  `style` varchar(255),
-  `condition` varchar(255),
+  `vin` VARCHAR(255) PRIMARY KEY,
+  `make` VARCHAR(255),
+  `model` VARCHAR(255),
+  `year` INT,
+  `color` VARCHAR(255),
+  `miles` DOUBLE,
+  `style` VARCHAR(255),
+  `condition` VARCHAR(255),
   `sold` bit DEFAULT 0
 );
 
 CREATE TABLE `Problem` (
-  `problem_id` int PRIMARY KEY AUTO_INCREMENT,
-  `description` varchar(255),
-  `estimated_repair_cost` double,
-  `actual_repair_cost` double
+  `problem_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `description` VARCHAR(255),
+  `estimated_repair_cost` DOUBLE,
+  `actual_repair_cost` DOUBLE
 );
 
 CREATE TABLE `WarrantyForm` (
-  `warranty_form_id` int PRIMARY KEY AUTO_INCREMENT,
-  `cosigner` varchar(255),
-  `date_sold` datetime,
-  `total_cost` double,
-  `monthly_cost` double
+  `warranty_form_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `cosigner` VARCHAR(255),
+  `date_sold` DATETIME,
+  `total_cost` DOUBLE,
+  `monthly_cost` DOUBLE
 );
 
 CREATE TABLE `Warranty` (
-  `warranty_id` int PRIMARY KEY AUTO_INCREMENT,
-  `start_date` datetime,
-  `end_date` datetime,
-  `cost` double,
-  `deductible` double
+  `warranty_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `start_date` DATETIME,
+  `end_date` DATETIME,
+  `cost` DOUBLE,
+  `deductible` DOUBLE
 );
 
 CREATE TABLE `Items` (
-  `item_id` int PRIMARY KEY AUTO_INCREMENT,
-  `description` varchar(255)
+  `item_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `description` VARCHAR(255)
 );
 
 CREATE TABLE `Payment` (
-  `payment_id` int PRIMARY KEY AUTO_INCREMENT,
-  `due_date` datetime,
-  `paid_date` datetime,
-  `amount` double,
-  `bank_account` int
+  `payment_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `due_date` DATETIME,
+  `paid_date` DATETIME,
+  `amount` DOUBLE,
+  `bank_account` INT
 );
 
 CREATE TABLE `Sale` (
-  `sale_id` int PRIMARY KEY AUTO_INCREMENT,
-  `date` datetime,
-  `total_due` double,
-  `down_payment` double,
-  `financed_amount` double
+  `sale_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `date` DATETIME,
+  `total_due` DOUBLE,
+  `down_payment` DOUBLE,
+  `financed_amount` DOUBLE
 );
 
 CREATE TABLE `EmploymentHistory` (
-  `employment_history_id` int PRIMARY KEY AUTO_INCREMENT,
-  `employer` varchar(255),
-  `title` varchar(255),
-  `supervisor` varchar(255),
-  `phone` varchar(255),
-  `address` varchar(255),
-  `start_date` datetime
+  `employment_history_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `employer` VARCHAR(255),
+  `title` VARCHAR(255),
+  `supervisor` VARCHAR(255),
+  `phone` VARCHAR(255),
+  `address` VARCHAR(255),
+  `start_date` DATETIME
 );
 
 CREATE TABLE `Seller` (
@@ -118,89 +118,89 @@ CREATE TABLE `Seller` (
 );
 
 CREATE TABLE `Employee_Location` (
-  `employee_id` int,
-  `location_id` int
+  `employee_id` INT,
+  `location_id` INT
 );
 
 CREATE TABLE `Customer_Location` (
-  `tax_id` int,
-  `location_id` int
+  `tax_id` INT,
+  `location_id` INT
 );
 
 CREATE TABLE `Vehicle_Purchase` (
-  `vin` varchar(255),
-  `purchase_id` int,
-  `book_price` double,
-  `paid_price` double,
-  `color` varchar(255),
-  `miles` double,
-  `condition` varchar(255)
+  `vin` VARCHAR(255),
+  `purchase_id` INT,
+  `book_price` DOUBLE,
+  `paid_price` DOUBLE,
+  `color` VARCHAR(255),
+  `miles` DOUBLE,
+  `condition` VARCHAR(255)
 );
 
 CREATE TABLE `Vehicle_Problem` (
-  `vin` varchar(255),
-  `problem_id` int
+  `vin` VARCHAR(255),
+  `problem_id` INT
 );
 
 CREATE TABLE `WarrantyForm_SalesPerson` (
-  `warranty_form_id` int,
-  `employee_id` int
+  `warranty_form_id` INT,
+  `employee_id` INT
 );
 
 CREATE TABLE `Vehicle_WarrantyForm` (
-  `warranty_form_id` int,
-  `vin` varchar(255)
+  `warranty_form_id` INT,
+  `vin` VARCHAR(255)
 );
 
 CREATE TABLE `Vehicle_Warranty` (
-  `warranty_id` int,
-  `vin` varchar(255)
+  `warranty_id` INT,
+  `vin` VARCHAR(255)
 );
 
 CREATE TABLE `Customers_WarrantyForm` (
-  `warranty_form_id` int,
-  `tax_id` int
+  `warranty_form_id` INT,
+  `tax_id` INT
 );
 
 CREATE TABLE `Warranty_Items` (
-  `warranty_id` int,
-  `item_id` int
+  `warranty_id` INT,
+  `item_id` INT
 );
 
 CREATE TABLE `Customer_Payments` (
-  `tax_id` int,
-  `payment_id` int
+  `tax_id` INT,
+  `payment_id` INT
 );
 
 CREATE TABLE `Vehicle_Sale` (
-  `vin` varchar(255),
-  `sale_id` int,
-  `list_price` double,
-  `sales_price` double,
-  `color` varchar(255),
-  `miles` double,
-  `condition` varchar(255)
+  `vin` VARCHAR(255),
+  `sale_id` INT,
+  `list_price` DOUBLE,
+  `sales_price` DOUBLE,
+  `color` VARCHAR(255),
+  `miles` DOUBLE,
+  `condition` VARCHAR(255)
 );
 
 CREATE TABLE `Sale_Employee` (
-  `sale_id` int,
-  `employee_id` int,
-  `employee_commission_percent` double
+  `sale_id` INT,
+  `employee_id` INT,
+  `employee_commission_percent` DOUBLE
 );
 
 CREATE TABLE `Sale_Customer` (
-  `sale_id` int,
-  `tax_id` int
+  `sale_id` INT,
+  `tax_id` INT
 );
 
 CREATE TABLE `Sale_CustomerLocation` (
-  `sale_id` int,
-  `location_id` int
+  `sale_id` INT,
+  `location_id` INT
 );
 
 CREATE TABLE `Customer_EmploymentHistory` (
-  `tax_id` int,
-  `employment_history_id` int
+  `tax_id` INT,
+  `employment_history_id` INT
 );
 
 ALTER TABLE `Purchase` ADD FOREIGN KEY (`location_id`) REFERENCES `Location` (`location_id`);

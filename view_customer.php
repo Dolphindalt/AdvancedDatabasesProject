@@ -61,7 +61,7 @@
         <h2>Billing Address</h2>
     </div>
     <?php 
-        $statement = $db->prepare("CALL getCustomerAddress(?);");
+        $statement = $db->prepare("SELECT * FROM Customer_Location AS cl LEFT JOIN Location AS l ON cl.location_id = l.location_id WHERE cl.tax_id = ?;");
         $statement->bindParam(1, $tax_id, PDO::PARAM_INT);
         $result_set = $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -82,7 +82,7 @@
         </div>
         <div class="col">
             <label for="zip">Postal/ZIP Code</label>
-            <input type="text" class="form-control" name="zip" id="zip" value="<?php echo $location['zip'] ?>" required>
+            <input type="text" class="form-control" name="zip" id="zip" value="<?php echo $location['ZIP'] ?>" required>
         </div>
     </div>
     <div class="form-row">
@@ -118,7 +118,7 @@
         $statement->bindParam(6, $date_of_birth, PDO::PARAM_STR);
         $statement->execute();
 
-        $statement = $db->prepare("SELECT l.location_id AS location_id FROM Customer_Location AS cl LEFT JOIN Location AS l ON cl.location_id = l.location_id WHERE cl.tax_id = ?");
+        $statement = $db->prepare("SELECT l.location_id AS location_id FROM Customer_Location AS cl LEFT JOIN Location AS l ON cl.location_id = l.location_id WHERE cl.tax_id = ?;");
         $statement->bindParam(1, $tax_id, PDO::PARAM_INT);
         $statement->execute();
         $location_id = $statement->fetchAll(PDO::FETCH_ASSOC)[0]['location_id'];

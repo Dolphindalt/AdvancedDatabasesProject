@@ -14,7 +14,12 @@ var employmentFormCounter = 2;
 function growEmploymentHistoryForm() {
     let wrapperDiv = document.getElementById('employeeFormSink');
     let employmentRecordString = '';
-    employmentRecordString += "<div class='form-row'>" +
+    employmentRecordString += "<div class=\"form-row\">" +
+            "<div class=\"col\">" + 
+                "<h4>Employment " + employmentFormCounter + "</h4>" + 
+            "</div>" + 
+        "</div>" + 
+        "<div class='form-row'>" +
         "<div class='col'>" +
             "<label for='employer" + employmentFormCounter + "'>Employer</label>" +
             "<input type='text' class='form-control' name='employer" + employmentFormCounter + "' id='employer" + employmentFormCounter + "' placeholder='Enter your employer'>" +
@@ -41,7 +46,7 @@ function growEmploymentHistoryForm() {
         "</div>" + 
         "<div class='col'>" + 
             "<label for='startDate" + employmentFormCounter + "'>Start Date</label>" + 
-            "<input type='text' class='form-control' name='startDate" + employmentFormCounter + 
+            "<input type='date' class='form-control' name='startDate" + employmentFormCounter + 
             "' id='startDate" + employmentFormCounter + "' placeholder='Enter the day you started working'>" + 
         "</div>" + 
     "</div>";
