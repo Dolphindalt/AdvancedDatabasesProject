@@ -40,6 +40,7 @@
             <th scope="col">Paid Date</th>
             <th scope="col">Amount</th>
             <th scope="col">Bank Account</th>
+            <th scope="col">Make Payment</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +57,7 @@
                 <td><?php echo $paid_date; ?></td>
                 <td><?php echo $payment['amount']; ?></td>
                 <td><?php echo $bank_account; ?></td>
+                <td><?php if ($paid_date == "Need Payment" ) { ?><a href="make_payment.php?pid=<?php echo $payment['payment_id']; ?>" class="btn btn-primary" role="button">Pay</a><?php } ?></td>
             </tr>
             <?php
         }

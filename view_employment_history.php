@@ -33,7 +33,7 @@
         $statement->execute();
         $customer = $statement->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $statement = $db->prepare("SELECT * FROM Customer_EmploymentHistory AS ce LEFT JOIN EmploymentHistory AS e ON ce.employment_history_id = e.employment_history_id WHERE ce.tax_id = ? ORDER BY e.start_date DESC;");
+        $statement = $db->prepare("SELECT * FROM Customer_EmploymentHistory AS ce LEFT JOIN EmploymentHistory AS e ON ce.employment_history_id = e.employment_history_id WHERE ce.tax_id = ? AND e.shadow_deleted = 0 ORDER BY e.start_date DESC;");
         $statement->bindParam(1, $tax_id, PDO::PARAM_INT);
         $statement->execute();
         $histories = $statement->fetchAll(PDO::FETCH_ASSOC);

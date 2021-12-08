@@ -25,11 +25,7 @@ if ($method == "DELETE")
 
     $db->query("START TRANSACTION;");
 
-    $statement = $db->prepare("DELETE FROM Customer_EmploymentHistory WHERE employment_history_id = ?;");
-    $statement->bindParam(1, $employment_history_id, PDO::PARAM_INT);
-    $statement->execute();
-
-    $statement = $db->prepare("DELETE FROM EmploymentHistory WHERE employment_history_id = ?;");
+    $statement = $db->prepare("UPDATE EmploymentHistory SET shadow_deleted = 1 WHERE employment_history_id = ?;");
     $statement->bindParam(1, $employment_history_id, PDO::PARAM_INT);
     $statement->execute();
 
