@@ -61,10 +61,10 @@
                     <label for="zip">Postal/ZIP Code</label>
                     <input type="text" class="form-control" name="zip" id="zip" placeholder="Enter your postal/ZIP code" required>
                 </div>
-                <div class="form-row" >
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
+            </div>
+            <div class="form-row" >
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>
